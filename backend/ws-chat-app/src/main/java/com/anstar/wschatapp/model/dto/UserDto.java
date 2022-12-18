@@ -1,5 +1,6 @@
 package com.anstar.wschatapp.model.dto;
 
+import com.anstar.wschatapp.model.enums.UserStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -17,7 +18,7 @@ public class UserDto {
     private String userName;
 
     @Column(name = "messanger_app.status")
-    private String status;
+    private UserStatus status;
 
     private UserDto(Builder builder){
         userName = builder.userName;
@@ -28,14 +29,14 @@ public class UserDto {
     public static final class Builder {
 
         private String userName;
-        private String status;
+        private UserStatus status;
 
         public Builder userName(String userName) {
             this.userName = userName;
             return this;
         }
 
-        public Builder status(String status) {
+        public Builder status(UserStatus status) {
             this.status = status;
             return this;
         }

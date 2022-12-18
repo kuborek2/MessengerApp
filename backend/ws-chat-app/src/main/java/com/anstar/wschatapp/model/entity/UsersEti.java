@@ -1,5 +1,6 @@
 package com.anstar.wschatapp.model.entity;
 
+import com.anstar.wschatapp.model.enums.UserStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -18,7 +19,8 @@ public class UsersEti {
     private String userName;
 
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
 
     private UsersEti(Builder builder){
         userName = builder.userName;
@@ -29,14 +31,14 @@ public class UsersEti {
     public static final class Builder {
 
         private String userName;
-        private String status;
+        private UserStatus status;
 
         public Builder userName(String userName) {
             this.userName = userName;
             return this;
         }
 
-        public Builder status(String status) {
+        public Builder status(UserStatus status) {
             this.status = status;
             return this;
         }
