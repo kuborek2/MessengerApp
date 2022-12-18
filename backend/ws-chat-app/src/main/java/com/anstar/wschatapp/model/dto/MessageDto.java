@@ -1,16 +1,14 @@
-package com.anstar.wschatapp.model;
+package com.anstar.wschatapp.model.dto;
 
 import com.anstar.wschatapp.model.enums.Status;
 import lombok.*;
-
-import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class Message {
+public class MessageDto {
     private String senderName;
     private String receiverName;
     private String message;
