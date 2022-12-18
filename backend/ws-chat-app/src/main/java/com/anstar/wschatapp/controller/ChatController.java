@@ -1,12 +1,13 @@
 package com.anstar.wschatapp.controller;
 
 import com.anstar.wschatapp.model.dto.MessageDto;
+import com.anstar.wschatapp.model.dto.NewMessageDto;
+import com.anstar.wschatapp.model.dto.NewUserDto;
 import com.anstar.wschatapp.model.dto.UserDto;
 import com.anstar.wschatapp.service.ChatService;
 import com.anstar.wschatapp.service.impl.ChatServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -14,8 +15,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,12 +25,14 @@ public class ChatController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatServiceImpl.class);
 
     private final ChatService chatService;
-
-    public ChatController(ChatService chatService){
-        this.chatService = chatService;
-    }
-    @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
+
+    public ChatController(ChatService chatService,
+                          SimpMessagingTemplate simpMessagingTemplate){
+        this.chatService = chatService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
+    }
+
 
     @CrossOrigin
     @GetMapping(value = "/users")
@@ -41,16 +43,33 @@ public class ChatController {
         return new ResponseEntity<>(moviesDtoList, HttpStatus.OK);
     }
 
+
+    @GetMapping(value = "/messages")
+    public ResponseEntity<List<MessageDto>> getMessagesByUserName(@RequestParam("userName") String userName) {
+        LOGGER.info("Get user by userName"+userName);
+
+        List<MessageDto> messageDtoList = chatService.findAllMessagesByUserName(userName);
+        return new ResponseEntity<>(messageDtoList, HttpStatus.OK);
+    }
+    @CrossOrigin
+    @PostMapping("/users")
+    public ResponseEntity saveUser(@RequestBody NewUserDto newUserDto){
+        Boolean result = chatService.saveUser(newUserDto);
+        LOGGER.info("Did user got saved: "+result);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @MessageMapping("/message")
     @SendTo("/chatroom/public")
-    public MessageDto receiveMessage(@Payload MessageDto messageDto){
-        return messageDto;
+    public NewMessageDto receiveMessage(@Payload NewMessageDto newMessageDto){
+        return newMessageDto;
     }
 
     @MessageMapping("/private-message")
-    public MessageDto recMessage(@Payload MessageDto messageDto){
-        simpMessagingTemplate.convertAndSendToUser(messageDto.getReceiverName(),"/private", messageDto);
-        System.out.println(messageDto.toString());
-        return messageDto;
+    public NewMessageDto recMessage(@Payload NewMessageDto newMessageDto){
+        simpMessagingTemplate.convertAndSendToUser(newMessageDto.getReceiverName(),"/private", newMessageDto);
+        LOGGER.info("Did message got saved " + chatService.saveMessage(newMessageDto));
+        System.out.println(newMessageDto.toString());
+        return newMessageDto;
     }
 }

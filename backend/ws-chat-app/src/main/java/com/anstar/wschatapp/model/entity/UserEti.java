@@ -1,9 +1,9 @@
 package com.anstar.wschatapp.model.entity;
 
-import com.anstar.wschatapp.model.enums.UserStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 
@@ -12,17 +12,19 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "user", schema="messanger_app")
-public class UsersEti {
+public class UserEti {
 
+    public static enum UserStatus {online, offline, away}
     @Id
     @Column(name = "user_name")
     private String userName;
 
-    @Column(name = "status")
+//    @Enumerated(EnumType.STRING)
     @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private UserStatus status;
 
-    private UsersEti(Builder builder){
+    private UserEti(Builder builder){
         userName = builder.userName;
         status = builder.status;
     }
@@ -43,8 +45,8 @@ public class UsersEti {
             return this;
         }
 
-        public UsersEti build() {
-            return new UsersEti(this);
+        public UserEti build() {
+            return new UserEti(this);
         }
     }
 

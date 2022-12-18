@@ -1,16 +1,17 @@
 package com.anstar.wschatapp.model.repository;
 
-import com.anstar.wschatapp.model.entity.UsersEti;
+import com.anstar.wschatapp.model.entity.UserEti;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface UserRepository extends CrudRepository<UsersEti, Long> {
+public interface UserRepository extends CrudRepository<UserEti, String> {
 
-    List<UsersEti> findAll();
+    List<UserEti> findAll();
 
-    UsersEti findByUserName(String userName);
+    UserEti findByUserName(String userName);
 
 }

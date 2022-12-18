@@ -1,7 +1,7 @@
 package com.anstar.wschatapp.model.mapper;
 
 import com.anstar.wschatapp.model.dto.UserDto;
-import com.anstar.wschatapp.model.entity.UsersEti;
+import com.anstar.wschatapp.model.entity.UserEti;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 
 
 @Component
-public class UserListMapper implements Converter<List<UsersEti>, List<UserDto>> {
+public class UserListMapper implements Converter<List<UserEti>, List<UserDto>> {
 
 @Override
-public List<UserDto> convert(List<UsersEti> users) {
+public List<UserDto> convert(List<UserEti> users) {
         List<UserDto> userDto = users
             .stream()
             .map((source -> {
