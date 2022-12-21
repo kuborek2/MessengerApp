@@ -43,7 +43,6 @@ public class ChatController {
         return new ResponseEntity<>(moviesDtoList, HttpStatus.OK);
     }
 
-
     @GetMapping(value = "/messages")
     public ResponseEntity<List<MessageDto>> getMessagesByUserName(@RequestParam("userName") String userName) {
         LOGGER.info("Get user by userName"+userName);
@@ -53,9 +52,17 @@ public class ChatController {
     }
     @CrossOrigin
     @PostMapping("/users")
-    public ResponseEntity saveUser(@RequestBody NewUserDto newUserDto){
+    public ResponseEntity<Void> saveUser(@RequestBody NewUserDto newUserDto){
         Boolean result = chatService.saveUser(newUserDto);
         LOGGER.info("Did user got saved: "+result);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @PutMapping("/users")
+    public ResponseEntity<Void> updateUserStatus(@RequestBody NewUserDto newUserDto){
+        Boolean result = chatService.saveUser(newUserDto);
+        LOGGER.info("Did user got upadted: "+result);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
