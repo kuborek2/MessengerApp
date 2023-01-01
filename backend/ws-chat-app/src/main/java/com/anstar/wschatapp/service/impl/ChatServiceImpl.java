@@ -72,6 +72,10 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public Boolean saveUser(NewUserDto newUserDto) {
         UserEti newUser = newUserMapper.convert(newUserDto);
+        List<UserDto> users = findAllUsers();
+        if ( users.contains(userMapper.convert(newUser)) )
+            return true;
+
         LOGGER.info(newUser.getStatus().getClass().toString());
         UserEti savedUser = userRepository.save(newUser);
         return savedUser.equals(newUser);

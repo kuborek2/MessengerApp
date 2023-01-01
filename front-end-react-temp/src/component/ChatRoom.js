@@ -176,10 +176,14 @@ const ChatRoom = () => {
     }
 
     const addUserNewUser = () => {
-
+        axios.post('http://localhost:8080/users', {
+            userName: userData.username,
+            status: "online"
+        })
     }
 
     const registerUser=()=>{
+        addUserNewUser();
         connect();
         getAllPreviousPriavteMessages();
         getAllPreviousPublicMessages();
