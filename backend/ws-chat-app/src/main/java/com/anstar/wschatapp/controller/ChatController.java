@@ -43,6 +43,7 @@ public class ChatController {
         return new ResponseEntity<>(moviesDtoList, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @GetMapping(value = "/messages")
     public ResponseEntity<List<MessageDto>> getMessagesByUserName(@RequestParam("userName") String userName) {
         LOGGER.info("Get user by userName"+userName);

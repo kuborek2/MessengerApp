@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {over} from 'stompjs';
 import SockJS from 'sockjs-client';
+import axios from 'axios';
 
 var stompClient =null;
 const ChatRoom = () => {
@@ -52,6 +53,38 @@ const ChatRoom = () => {
                 setPublicChats([...publicChats]);
                 break;
         }
+    }
+
+    const handlePreviousMessage = (message) => {
+        if( message.senderName != userData.username && !privateChats.get(message.senderName)){
+            privateChats.set(message.senderName, []);
+            setPrivateChats(new Map(privateChats));
+        }
+
+        let destinationUser;
+        if( message.senderName == userData.username )
+            destinationUser = message.receiverName;
+        else 
+            destinationUser = message.senderName;
+
+        if(privateChats.get(destinationUser)){
+            privateChats.get(destinationUser).push(message);
+            setPrivateChats(new Map(privateChats));
+        }else{
+            let list =[];
+            list.push(message);
+            privateChats.set(destinationUser,list);
+            setPrivateChats(new Map(privateChats));
+        }
+    }
+
+    const getAllPreviousPriavteMessages = () => {
+        axios.get(`http://localhost:8080/messages?userName=`+userData.username)
+            .then(res => {
+                const messages = res.data;
+                console.log(messages)
+                messages.map((message) => handlePreviousMessage(message))
+            })
     }
     
     const onPrivateMessage = (payload)=>{
@@ -115,6 +148,7 @@ const ChatRoom = () => {
 
     const registerUser=()=>{
         connect();
+        getAllPreviousPriavteMessages();
     }
     return (
     <div className="container">
