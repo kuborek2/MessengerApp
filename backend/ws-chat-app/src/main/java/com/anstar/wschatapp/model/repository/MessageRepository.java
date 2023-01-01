@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends CrudRepository<MessageEti, NewMessageDto> {
 
-    List<MessageEti> findAllBySenderOrReceiver(String sender, String receiver);
+    List<MessageEti> findAllBySenderIsNotNullAndReceiverIsNotNullAndSenderOrReceiver(String sender, String receiver);
+
+    List<MessageEti> findAllByReceiverIsNull();
 
 }

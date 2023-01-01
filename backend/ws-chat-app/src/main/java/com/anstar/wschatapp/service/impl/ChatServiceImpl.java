@@ -61,7 +61,11 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<MessageDto> findAllMessagesByUserName(String userName) {
-        List<MessageEti> messageEtiList = messageRepository.findAllBySenderOrReceiver(userName, userName);
+        List<MessageEti> messageEtiList;
+        if( userName.equals("null") )
+            messageEtiList = messageRepository.findAllByReceiverIsNull();
+        else
+            messageEtiList = messageRepository.findAllBySenderIsNotNullAndReceiverIsNotNullAndSenderOrReceiver(userName, userName);
         return messageEtiListMapper.convert(messageEtiList);
     }
 

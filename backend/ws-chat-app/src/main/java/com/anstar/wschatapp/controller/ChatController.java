@@ -70,6 +70,8 @@ public class ChatController {
     @MessageMapping("/message")
     @SendTo("/chatroom/public")
     public NewMessageDto receiveMessage(@Payload NewMessageDto newMessageDto){
+        if( newMessageDto.getMessage() != null )
+            LOGGER.info("Did message got saved " + chatService.saveMessage(newMessageDto));
         return newMessageDto;
     }
 

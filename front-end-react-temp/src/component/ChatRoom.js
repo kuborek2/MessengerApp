@@ -39,6 +39,10 @@ const ChatRoom = () => {
           stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
     }
 
+    const sendNoticeMessage = () => {
+        
+    }
+
     const onMessageReceived = (payload)=>{
         var payloadData = JSON.parse(payload.body);
         switch(payloadData.status){
@@ -78,12 +82,26 @@ const ChatRoom = () => {
         }
     }
 
+    const handlePreviousPublicMessage = (message) => {
+        publicChats.push(message);
+        setPublicChats([...publicChats]);
+    }
+
     const getAllPreviousPriavteMessages = () => {
         axios.get(`http://localhost:8080/messages?userName=`+userData.username)
             .then(res => {
                 const messages = res.data;
                 console.log(messages)
                 messages.map((message) => handlePreviousMessage(message))
+            })
+    }
+
+    const getAllPreviousPublicMessages = () => {
+        axios.get(`http://localhost:8080/messages?userName=null`)
+            .then(res => {
+                const messages = res.data;
+                console.log(messages)
+                messages.map((message) => handlePreviousPublicMessage(message))
             })
     }
     
@@ -111,16 +129,16 @@ const ChatRoom = () => {
         setUserData({...userData,"message": value});
     }
     const sendValue=()=>{
-            if (stompClient) {
-              var chatMessage = {
-                senderName: userData.username,
-                message: userData.message,
-                status:"MESSAGE"
-              };
-              console.log(chatMessage);
-              stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
-              setUserData({...userData,"message": ""});
-            }
+        if (stompClient) {
+            var chatMessage = {
+            senderName: userData.username,
+            message: userData.message,
+            status:"MESSAGE"
+            };
+            console.log(chatMessage);
+            stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+            setUserData({...userData,"message": ""});
+        }
     }
 
     const sendPrivateValue=()=>{
@@ -146,9 +164,14 @@ const ChatRoom = () => {
         setUserData({...userData,"username": value});
     }
 
+    const addUserNewUser = () => {
+
+    }
+
     const registerUser=()=>{
         connect();
         getAllPreviousPriavteMessages();
+        getAllPreviousPublicMessages();
     }
     return (
     <div className="container">
