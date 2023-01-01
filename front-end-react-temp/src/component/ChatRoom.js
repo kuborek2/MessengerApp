@@ -40,7 +40,11 @@ const ChatRoom = () => {
     }
 
     const sendNoticeMessage = () => {
-        
+        var chatMessage = {
+            senderName: userData.username,
+            status:"NOTICE"
+          };
+        stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
     }
 
     const onMessageReceived = (payload)=>{
@@ -51,10 +55,17 @@ const ChatRoom = () => {
                     privateChats.set(payloadData.senderName,[]);
                     setPrivateChats(new Map(privateChats));
                 }
+                sendNoticeMessage();
                 break;
             case "MESSAGE":
                 publicChats.push(payloadData);
                 setPublicChats([...publicChats]);
+                break;
+            case "NOTICE":
+                if(!privateChats.get(payloadData.senderName)){
+                    privateChats.set(payloadData.senderName,[]);
+                    setPrivateChats(new Map(privateChats));
+                }
                 break;
         }
     }
