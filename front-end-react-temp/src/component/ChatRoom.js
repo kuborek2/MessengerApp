@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {over} from 'stompjs';
 import SockJS from 'sockjs-client';
+import axios from 'axios';
 
 var stompClient =null;
 const ChatRoom = () => {
@@ -38,6 +39,14 @@ const ChatRoom = () => {
           stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
     }
 
+    const sendNoticeMessage = () => {
+        var chatMessage = {
+            senderName: userData.username,
+            status:"NOTICE"
+          };
+        stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+    }
+
     const onMessageReceived = (payload)=>{
         var payloadData = JSON.parse(payload.body);
         switch(payloadData.status){
@@ -46,12 +55,65 @@ const ChatRoom = () => {
                     privateChats.set(payloadData.senderName,[]);
                     setPrivateChats(new Map(privateChats));
                 }
+                sendNoticeMessage();
                 break;
             case "MESSAGE":
                 publicChats.push(payloadData);
                 setPublicChats([...publicChats]);
                 break;
+            case "NOTICE":
+                if(!privateChats.get(payloadData.senderName)){
+                    privateChats.set(payloadData.senderName,[]);
+                    setPrivateChats(new Map(privateChats));
+                }
+                break;
         }
+    }
+
+    const handlePreviousMessage = (message) => {
+        if( message.senderName != userData.username && !privateChats.get(message.senderName)){
+            privateChats.set(message.senderName, []);
+            setPrivateChats(new Map(privateChats));
+        }
+
+        let destinationUser;
+        if( message.senderName == userData.username )
+            destinationUser = message.receiverName;
+        else 
+            destinationUser = message.senderName;
+
+        if(privateChats.get(destinationUser)){
+            privateChats.get(destinationUser).push(message);
+            setPrivateChats(new Map(privateChats));
+        }else{
+            let list =[];
+            list.push(message);
+            privateChats.set(destinationUser,list);
+            setPrivateChats(new Map(privateChats));
+        }
+    }
+
+    const handlePreviousPublicMessage = (message) => {
+        publicChats.push(message);
+        setPublicChats([...publicChats]);
+    }
+
+    const getAllPreviousPriavteMessages = () => {
+        axios.get(`http://localhost:8080/messages?userName=`+userData.username)
+            .then(res => {
+                const messages = res.data;
+                console.log(messages)
+                messages.map((message) => handlePreviousMessage(message))
+            })
+    }
+
+    const getAllPreviousPublicMessages = () => {
+        axios.get(`http://localhost:8080/messages?userName=null`)
+            .then(res => {
+                const messages = res.data;
+                console.log(messages)
+                messages.map((message) => handlePreviousPublicMessage(message))
+            })
     }
     
     const onPrivateMessage = (payload)=>{
@@ -78,16 +140,16 @@ const ChatRoom = () => {
         setUserData({...userData,"message": value});
     }
     const sendValue=()=>{
-            if (stompClient) {
-              var chatMessage = {
-                senderName: userData.username,
-                message: userData.message,
-                status:"MESSAGE"
-              };
-              console.log(chatMessage);
-              stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
-              setUserData({...userData,"message": ""});
-            }
+        if (stompClient) {
+            var chatMessage = {
+            senderName: userData.username,
+            message: userData.message,
+            status:"MESSAGE"
+            };
+            console.log(chatMessage);
+            stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+            setUserData({...userData,"message": ""});
+        }
     }
 
     const sendPrivateValue=()=>{
@@ -113,8 +175,18 @@ const ChatRoom = () => {
         setUserData({...userData,"username": value});
     }
 
+    const addUserNewUser = () => {
+        axios.post('http://localhost:8080/users', {
+            userName: userData.username,
+            status: "online"
+        })
+    }
+
     const registerUser=()=>{
+        addUserNewUser();
         connect();
+        getAllPreviousPriavteMessages();
+        getAllPreviousPublicMessages();
     }
     return (
     <div className="container">
