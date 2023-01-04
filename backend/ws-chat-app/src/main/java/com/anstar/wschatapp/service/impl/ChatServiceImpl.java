@@ -78,7 +78,7 @@ public class ChatServiceImpl implements ChatService {
 
         LOGGER.info(newUser.getStatus().getClass().toString());
         UserEti savedUser = userRepository.save(newUser);
-        return savedUser.equals(newUser);
+        return savedUser.getUserName() == newUserDto.getUserName();
     }
 
 }

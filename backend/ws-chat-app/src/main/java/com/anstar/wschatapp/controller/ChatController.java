@@ -36,7 +36,7 @@ public class ChatController {
 
     @CrossOrigin
     @GetMapping(value = "/users")
-    public ResponseEntity<List<UserDto>> getMovies() {
+    public ResponseEntity<List<UserDto>> getUsers() {
         LOGGER.info("find all users");
 
         List<UserDto> moviesDtoList = chatService.findAllUsers();
