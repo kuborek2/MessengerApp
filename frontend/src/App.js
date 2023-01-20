@@ -1,9 +1,10 @@
 import './App.css';
+import FrontPage from './components/Frontpage/FrontPage';
 
 function App() {
   return (
     <>
-      Yes
+      <FrontPage/>
     </>
   );
 }

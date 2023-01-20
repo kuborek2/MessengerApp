@@ -1,0 +1,55 @@
+.layout {
+    margin: 0px;
+    overflow: hidden;
+    padding: 0px 30px 0px 30px;
+    width: calc(100%-60px);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #C1FCF5;
+    height: 75px;
+}
+
+.layout > a {
+    text-decoration: none;
+    width: fit-content;
+}
+
+.header {
+    text-shadow: -3px 2px #468878, -2px 3px #4FFFF1, 3px -2px #468878, 2px -3px #4FFFF1, 0 0 25px black;
+    /* #468878, #4FFFF1 */
+    display: block;
+    width: fit-content;
+    padding: 5px;
+    color: white;
+    text-align: center;
+}
+
+.userControlButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.userControlButtons > button {
+    margin: 15px;
+    width: 8vw;
+    height: 5vh;
+    min-width: fit-content;
+    min-height: fit-content;
+    background-color: #00C5B9;
+    color: white;
+    border: none;
+    border-radius: 10vw;
+}
+
+#userName {
+    background-color: #00c5b87c;
+    color: black;
+}
+
+#logOutBtn:hover {
+    background-color: white;
+    color: black;
+}
+

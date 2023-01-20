@@ -10,6 +10,9 @@ import {
 } from "react-router-dom";
 import { Provider } from 'react-redux'
 import store from './store/storeIndex';
+import AccessPage from './components/access/AccessPage';
+import RegisterPage from './components/access/register/RegisterPage';
+import SignInPage from './components/access/signin/SignInPage'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,6 +21,10 @@ root.render(
       <Provider store={store}>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="access" element={<AccessPage />}>
+          <Route path="register" element={<RegisterPage />}/>
+          <Route path="signin" element={<SignInPage />}/>
+          </Route>
       </Routes>
       </Provider>
     </BrowserRouter>
