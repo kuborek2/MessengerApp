@@ -9,7 +9,7 @@ const TopNavigation = () => {
                 <button disabled id="userName">
                     { "user" }
                 </button>
-                <button id="logOutBtn" onClick={}>
+                <button id="logOutBtn" onClick={() => {}}>
                     Log out
                 </button>
             </div>
@@ -17,10 +17,10 @@ const TopNavigation = () => {
     }
 
     return (
-        <div className="layout">
+        <div className="top-navigation-layout">
             <Link to="/">
                 <h2 className="header">
-                    StepTrello
+                    MessengerApp
                 </h2>
             </Link>
             {/* { login.isUserLoggedIn ? <UserControlButtons/> : "" } */}

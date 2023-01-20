@@ -18,7 +18,7 @@
 
 }
 
-.socialMedia > button, a {
+.socialMedia > button, .socialMedia > a {
     margin-left: 10px;
     width: 45px;
     height: 45px;
@@ -31,22 +31,22 @@
 }
 
 .socialMedia > button:nth-child(1) {
-    background-image: url(../../../resources/instagram.png);
+    background-image: url(../../resources/instagram.png);
 }
 
 .socialMedia > button:nth-child(2) {
-    background-image: url(../../../resources/facebook.png);
+    background-image: url(../../resources/facebook.png);
 }
 
 .socialMedia > button:nth-child(3) {
-    background-image: url(../../../resources/twitter.png);
+    background-image: url(../../resources/twitter.png);
 }
 
 .socialMedia > a:nth-child(4) {
-    background-image: url(../../../resources/github.png);
+    background-image: url(../../resources/github.png);
 }
 
-.socialMedia > button:hover, a:hover {
+.socialMedia > button:hover, .socialMedia > a:hover {
     filter: invert(100%);
     -webkit-filter: invert(100%);
 }

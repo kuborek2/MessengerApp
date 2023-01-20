@@ -1,22 +1,21 @@
-.formBox {
+.sign_in_formBox {
     position: relative;
     box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
     width: 100%;
     height: calc(100vh - 75px);
-    border: 20px solid #E3FFFB;
+    background-color: #8B8A8A;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: auto;
 }
 
-form > input {
+.sign_in_formBox > form > input {
     margin-bottom: 10px;
     width: 20vw;
 }
 
-form > button {
+.sign_in_formBox > form > button {
     margin-top: 10px;
     width: 8vw;
     height: 5vh;
@@ -25,7 +24,11 @@ form > button {
     transform: translate(-50%);
 }
 
-.loadingBlocker {
+.sign_in_formBox > fieldset {
+    border-color: #00C9C7;
+}
+
+.sign_in_formBox > .loadingBlocker {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -33,4 +36,15 @@ form > button {
     align-items: center;
     justify-content: center;
     background-color: rgb(166, 163, 170, 0.2);
+}
+
+.sign_in_formBox > div > .formControlButtons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sign_in_formBox > div > .formControlButtons > button {
+    margin-top: 2vh;
+    width: 10vw;
 }

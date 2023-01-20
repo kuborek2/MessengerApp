@@ -1,13 +1,13 @@
 import './SignInPage.css'
 import CircularProgress from '@mui/material/CircularProgress';
 import { useState } from 'react';
-import UserUtlis from '../utils/UserUtils.js'
 import TextField from '@mui/material/TextField';
-import { FormControl, Button } from '@mui/material';
+import { FormControl, Button, ThemeProvider, createTheme } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import SimpleAlert from './reusable/SimpleAlert';
-import { toggleLogin } from '../store/loginSlice';
+// import { toggleLogin } from '../store/loginSlice';
 import { useDispatch } from 'react-redux';
+import SimpleAlert from '../../reusable/simple_alert/SimpleAlert';
+import { red } from '@mui/material/colors';
 
 const SignInPage = () => {
 
@@ -41,8 +41,33 @@ const SignInPage = () => {
     }
     const [isBlockerOut, setIsBLockerOut] = useState(blockerDisplayOption.hidden)
 
-    // textfields styles
-    const styleForTextFields = { width: "20vw" }
+    // textfields styles 
+    const styleForTextFields = { 
+        width: "20vw",
+        '& .MuiFormLabel-root': {
+            color: '#00C9C7'
+        },
+        '&:hover .MuiFormLabel-root': {
+            color: 'white',
+            },
+            '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                    borderColor: '#00C9C7',
+                    borderWidth: '2px',
+                },
+                '&:hover fieldset': {
+                    borderColor: 'white',
+                    borderWidth: '2px',
+                },
+                '&.Mui-focused fieldset': {
+                    borderColor: 'white',
+                    borderWidth: '2px',
+                },
+              },
+        '& label.Mui-focused': {
+            color: 'white',
+            },
+        }
 
     // text field control
     const [formValues, setFormValues] = useState({
@@ -50,22 +75,22 @@ const SignInPage = () => {
         password: "",
     });
 
-    const registrationSettled = (response) => {
-        console.log("Logowanie powidło się")
-        if( response.data.password === formValues.password ){
-            navigate("/access/dashboard");
-            dispatch(toggleLogin (formValues.login))
-        } else registrationRejected()
-    }
+    // const SignInSettled = (response) => {
+    //     console.log("Logowanie powidło się")
+    //     if( response.data.password === formValues.password ){
+    //         navigate("/access/dashboard");
+    //         dispatch(toggleLogin (formValues.login))
+    //     } else registrationRejected()
+    // }
 
-    const registrationRejected = () => {
-        console.log("Logowanie nie powidło się")
-        setAlertInfo({
-            title: "Logowanie nie powiodło się",
-            content: ""
-        })
-        handleClickOpen();
-    }
+    // const SignInRejected = () => {
+    //     console.log("Logowanie nie powidło się")
+    //     setAlertInfo({
+    //         title: "Logowanie nie powiodło się",
+    //         content: ""
+    //     })
+    //     handleClickOpen();
+    // }
 
     const handleInputChange = (e) => {
             const { name, value } = e.target;
@@ -76,27 +101,27 @@ const SignInPage = () => {
         };
 
     const LogIn = async () => {
-        setIsBLockerOut(blockerDisplayOption.visable)
+        // setIsBLockerOut(blockerDisplayOption.visable)
 
-        await UserUtlis.requestLogIn(
-            { login: formValues.login },
-            registrationSettled,
-            registrationRejected,
-        )
+        // await UserUtlis.requestLogIn(
+        //     { login: formValues.login },
+        //     SignInSettled,
+        //     SignInRejected,
+        // )
 
-        setIsBLockerOut(blockerDisplayOption.hidden)
+        // setIsBLockerOut(blockerDisplayOption.hidden)
     }
 
     return (
         <div>
-            <div className='formBox'>
+            <div className='sign_in_formBox'>
                 <FormControl>
                     <TextField
                         required
                         id="login"
                         name="login"
                         label="Login"
-                        sx={styleForTextFields}
+                        sx={styleForTextFields} 
                         margin="normal"
                         value={formValues.login}
                         onChange={handleInputChange}
@@ -117,7 +142,7 @@ const SignInPage = () => {
                             variant="contained" 
                             color="primary" 
                             type="submit" 
-                            sx={{backgroundColor: "#C1FCF5", color: "black"}} 
+                            sx={{backgroundColor: "#00C9C7", color: "black"}} 
                             onClick={() => LogIn()}>
                             Log In
                         </Button>

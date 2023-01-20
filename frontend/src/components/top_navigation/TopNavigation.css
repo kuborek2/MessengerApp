@@ -1,4 +1,5 @@
-.layout {
+
+.top-navigation-layout {
     margin: 0px;
     overflow: hidden;
     padding: 0px 30px 0px 30px;
@@ -6,50 +7,36 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: #C1FCF5;
+    background-color: #595858;
     height: 75px;
 }
 
-.layout > a {
+.top-navigation-layout > a {
     text-decoration: none;
     width: fit-content;
 }
 
+@keyframes header_anim {
+    from {color: #00C9C7}
+    to {color: white;}
+  }
+
+@keyframes header_anim_reverse {
+    from {color: white}
+    to {color: #00C9C7}
+  }
+
 .header {
-    text-shadow: -3px 2px #468878, -2px 3px #4FFFF1, 3px -2px #468878, 2px -3px #4FFFF1, 0 0 25px black;
-    /* #468878, #4FFFF1 */
-    display: block;
-    width: fit-content;
-    padding: 5px;
-    color: white;
-    text-align: center;
+    color: #00C9C7;
+    animation-name: header_anim_reverse;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
 }
 
-.userControlButtons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.header:hover {
+    animation-name: header_anim;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
 }
 
-.userControlButtons > button {
-    margin: 15px;
-    width: 8vw;
-    height: 5vh;
-    min-width: fit-content;
-    min-height: fit-content;
-    background-color: #00C5B9;
-    color: white;
-    border: none;
-    border-radius: 10vw;
-}
-
-#userName {
-    background-color: #00c5b87c;
-    color: black;
-}
-
-#logOutBtn:hover {
-    background-color: white;
-    color: black;
-}
 

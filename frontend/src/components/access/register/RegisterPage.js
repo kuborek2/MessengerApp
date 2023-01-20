@@ -1,11 +1,10 @@
 import './RegisterPage.css'
 import CircularProgress from '@mui/material/CircularProgress';
 import { useState } from 'react';
-import UserUtlis from '../utils/UserUtils.js'
 import TextField from '@mui/material/TextField';
 import { FormControl, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import SimpleAlert from './reusable/SimpleAlert';
+import SimpleAlert from '../../reusable/simple_alert/SimpleAlert';
 
 const RegisterPage = () => {
 
@@ -29,8 +28,6 @@ const RegisterPage = () => {
     // Values of the from control
     const [formValues, setFormValues] = useState({
         login: "",
-        email: "",
-        confirmEmail: "",
         password: "",
         confirmPassword: ""
     });
@@ -44,7 +41,32 @@ const RegisterPage = () => {
         };
 
     // Textinputs stlye control
-    const styleForTextFields = { width: "20vw" }
+    const styleForTextFields = { 
+        width: "20vw",
+        '& .MuiFormLabel-root': {
+            color: '#00C9C7'
+        },
+        '&:hover .MuiFormLabel-root': {
+            color: 'white',
+            },
+            '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                    borderColor: '#00C9C7',
+                    borderWidth: '2px',
+                },
+                '&:hover fieldset': {
+                    borderColor: 'white',
+                    borderWidth: '2px',
+                },
+                '&.Mui-focused fieldset': {
+                    borderColor: 'white',
+                    borderWidth: '2px',
+                },
+              },
+        '& label.Mui-focused': {
+            color: 'white',
+            },
+        }
     const [formStyleValues, setFormStyleValues] = useState({
         login: {},
         email: {},
@@ -129,21 +151,21 @@ const RegisterPage = () => {
     }
 
     const registerUser = async () => {
-        setIsBLockerOut(blockerDisplayOption.visable)
+        // setIsBLockerOut(blockerDisplayOption.visable)
 
-        if( ValidateForm() === true){
-            await UserUtlis.requestUserRegistration(
-                {
-                    login: formValues.login,
-                    email: formValues.email,
-                    password: formValues.password
-                },
-                registrationSettled,
-                registrationRejected,
-            )
-        }
+        // if( ValidateForm() === true){
+        //     await UserUtlis.requestUserRegistration(
+        //         {
+        //             login: formValues.login,
+        //             email: formValues.email,
+        //             password: formValues.password
+        //         },
+        //         registrationSettled,
+        //         registrationRejected,
+        //     )
+        // }
 
-        setIsBLockerOut(blockerDisplayOption.hidden)
+        // setIsBLockerOut(blockerDisplayOption.hidden)
     }
 
     const clearForm = () => {
@@ -158,7 +180,7 @@ const RegisterPage = () => {
 
     return (
         <div>
-            <div className='formBox'>
+            <div className='register_formBox'>
                 <FormControl>
                     
                     <TextField
@@ -166,31 +188,9 @@ const RegisterPage = () => {
                         id="login"
                         name="login"
                         label="Login"
-                        sx={[styleForTextFields, formStyleValues.login]}
+                        sx={styleForTextFields}
                         margin="normal"
                         value={formValues.login}
-                        onChange={handleInputChange}
-                        />
-                    
-                    <TextField
-                        required
-                        id="email"
-                        name="email"
-                        label="Email"
-                        sx={[styleForTextFields, formStyleValues.email]}
-                        margin="normal"
-                        value={formValues.email}
-                        onChange={handleInputChange}
-                        />
-
-                    <TextField
-                        required
-                        id="confirmEmail"
-                        name="confirmEmail"
-                        label="Confirm Email"
-                        sx={[styleForTextFields, formStyleValues.confirmEmail]}
-                        margin="normal"
-                        value={formValues.confirmEmail}
                         onChange={handleInputChange}
                         />
                     
@@ -199,7 +199,7 @@ const RegisterPage = () => {
                         id="password"
                         name="password"
                         label="Password"
-                        sx={[styleForTextFields, formStyleValues.password]}
+                        sx={styleForTextFields}
                         margin="normal"
                         value={formValues.password}
                         onChange={handleInputChange}
@@ -210,7 +210,7 @@ const RegisterPage = () => {
                         id="confirmPassword"
                         name="confirmPassword"
                         label="Confirm Password"
-                        sx={[styleForTextFields, formStyleValues.confirmEmail]}
+                        sx={styleForTextFields}
                         margin="normal"
                         value={formValues.confirmPassword}
                         onChange={handleInputChange}
@@ -221,7 +221,7 @@ const RegisterPage = () => {
                             variant="contained" 
                             color="primary" 
                             type="submit" 
-                            sx={{backgroundColor: "#C1FCF5", color: "black"}} 
+                            sx={{backgroundColor: "#00C9C7", color: "black"}} 
                             onClick={() => registerUser()}>
                             Submit
                         </Button>
@@ -229,7 +229,7 @@ const RegisterPage = () => {
                             variant="contained" 
                             color="primary" 
                             type="reset" 
-                            sx={{backgroundColor: "#C1FCF5", color: "black"}}
+                            sx={{backgroundColor: "#00C9C7", color: "black"}}
                             onClick={() => clearForm()}>
                             Reset
                         </Button>
