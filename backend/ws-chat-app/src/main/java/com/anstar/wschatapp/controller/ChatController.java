@@ -66,7 +66,7 @@ public class ChatController {
     @CrossOrigin
     @PostMapping("/users")
     public ResponseEntity<Void> saveUser(@RequestBody NewUserDto newUserDto){
-        LOGGER.info("Trying to registrer user with: ");
+        LOGGER.info("Trying to register user with: ");
         LOGGER.info(newUserDto.toString());
         Boolean result = chatService.saveUser(newUserDto);
         LOGGER.info("Did user got saved: "+result);
