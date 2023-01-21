@@ -2,12 +2,11 @@ import './SignInPage.css'
 import CircularProgress from '@mui/material/CircularProgress';
 import { useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { FormControl, Button, ThemeProvider, createTheme } from '@mui/material';
+import { FormControl, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 // import { toggleLogin } from '../store/loginSlice';
 import { useDispatch } from 'react-redux';
 import SimpleAlert from '../../reusable/simple_alert/SimpleAlert';
-import { red } from '@mui/material/colors';
 
 const SignInPage = () => {
 

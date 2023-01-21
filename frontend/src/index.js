@@ -13,6 +13,8 @@ import store from './store/storeIndex';
 import AccessPage from './components/access/AccessPage';
 import RegisterPage from './components/access/register/RegisterPage';
 import SignInPage from './components/access/signin/SignInPage'
+import AppPage from './components/app/AppPage';
+import ChatPage from './components/app/chat/ChatPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -25,6 +27,9 @@ root.render(
           <Route path="register" element={<RegisterPage />}/>
           <Route path="signin" element={<SignInPage />}/>
           </Route>
+        <Route path="app" element={<AppPage />}>
+          <Route path='chat' element={<ChatPage />} />
+        </Route>
       </Routes>
       </Provider>
     </BrowserRouter>

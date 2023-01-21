@@ -10,9 +10,10 @@ public class UserMapper implements Converter<UserEti, UserDto> {
 
     @Override
     public UserDto convert(UserEti source) {
-        return new UserDto.Builder()
+        return UserDto.builder()
                 .userName(source.getUserName())
                 .status(source.getStatus())
+                .password(source.getPassword())
                 .build();
     }
 

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ChatController {
@@ -41,6 +42,17 @@ public class ChatController {
 
         List<UserDto> moviesDtoList = chatService.findAllUsers();
         return new ResponseEntity<>(moviesDtoList, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/users/{userName}")
+    public ResponseEntity<UserDto> getUsersByName(@PathVariable String userName) {
+        LOGGER.info("find user by userName: "+userName);
+
+        Optional<UserDto> userDtoOptional = chatService.findOneUserByUserName(userName);
+        if( userDtoOptional.isEmpty() )
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(userDtoOptional.get(), HttpStatus.OK);
     }
 
     @CrossOrigin

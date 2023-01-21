@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ChatServiceImpl implements ChatService {
@@ -50,6 +51,11 @@ public class ChatServiceImpl implements ChatService {
         List<UserEti> userEtiList = userRepository.findAll();
         LOGGER.info("These are users", userEtiList);
         return userListMapper.convert(userEtiList);
+    }
+
+    @Override
+    public Optional<UserDto> findOneUserByUserName(String userName) {
+        return Optional.ofNullable(userMapper.convert(userRepository.findByUserName(userName)));
     }
 
     @Override

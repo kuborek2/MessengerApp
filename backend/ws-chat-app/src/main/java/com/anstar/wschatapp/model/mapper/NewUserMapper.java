@@ -10,9 +10,10 @@ public class NewUserMapper implements Converter<NewUserDto, UserEti> {
 
     @Override
     public UserEti convert(NewUserDto source) {
-        return new UserEti.Builder()
+        return UserEti.builder()
                 .userName(source.getUserName())
-                .status(mapUserStatus(source.getStatus()))
+                .status(UserEti.UserStatus.offline)
+                .password(source.getPassword())
                 .build();
     }
 
@@ -32,7 +33,7 @@ public class NewUserMapper implements Converter<NewUserDto, UserEti> {
                 break;
 
             default:
-                result = UserEti.UserStatus.online;
+                result = UserEti.UserStatus.offline;
                 break;
         }
         return result;
