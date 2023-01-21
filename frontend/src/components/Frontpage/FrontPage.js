@@ -40,7 +40,7 @@ const FrontPage = () => {
     return (
         <div className="pageLayout">
             <div className="topElement">
-                <div class="background-image">
+                <div className="background-image">
                     <img src={chat_image} alt=""/>
                 </div>
                 <article>

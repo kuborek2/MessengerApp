@@ -9,9 +9,6 @@ import lombok.*;
 @Getter
 public class NewUserDto {
     private String userName;
-
-    private String status;
-
     private String password;
 
 }

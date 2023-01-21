@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import { FormControl, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import SimpleAlert from '../../reusable/simple_alert/SimpleAlert';
+import UserRequests from '../../reusable/UserRequests';
 
 const RegisterPage = () => {
 
@@ -46,6 +47,9 @@ const RegisterPage = () => {
         '& .MuiFormLabel-root': {
             color: '#00C9C7'
         },
+        '& .MuiInputBase-input': {
+            color: 'white',
+        },
         '&:hover .MuiFormLabel-root': {
             color: 'white',
             },
@@ -69,8 +73,6 @@ const RegisterPage = () => {
         }
     const [formStyleValues, setFormStyleValues] = useState({
         login: {},
-        email: {},
-        confirmEmail: {},
         password: {},
         confirmPassword: {}
     });
@@ -88,33 +90,18 @@ const RegisterPage = () => {
         let returnValue = true;
         //login
         if( formValues.login === "" ){ 
-            handleStyleValues("login", invalidInputColor)
             returnValue = false;
-        } else handleStyleValues("login", defaultColor)
-
-        //email
-        if( formValues.email === "" || !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.email) ){ 
-            handleStyleValues("email", invalidInputColor)
-            returnValue = false;
-        } else handleStyleValues("email", defaultColor)
-
-        //confirm email
-        if( formValues.confirmEmail === "" || formValues.email !== formValues.confirmEmail ){ 
-            handleStyleValues("confirmEmail", invalidInputColor)
-            returnValue = false;
-        } else handleStyleValues("confirmEmail", defaultColor)
+        }
 
         //password
         if( formValues.password === "" ){ 
-            handleStyleValues("password", invalidInputColor)
             returnValue = false;
-        } else handleStyleValues("password", defaultColor)
+        }
 
         //confirm password
         if( formValues.confirmPassword === "" || formValues.password !== formValues.confirmPassword ){ 
-            handleStyleValues("confirmPassword", invalidInputColor)
             returnValue = false;
-        } else handleStyleValues("confirmPassword", defaultColor)
+        }
 
         return returnValue
     }
@@ -132,7 +119,6 @@ const RegisterPage = () => {
 
     //Registration
     const registrationSettled = () => {
-        console.log("Rejestracja powiodła się")
         setAlertInfo({
             title: "Rejestracja powidła się",
             content: "Można powrócić do strony głównej i się z tamtąd zalogować"
@@ -141,38 +127,45 @@ const RegisterPage = () => {
         // navigate("/home");
     }
 
-    const registrationRejected = () => {
-        console.log("Rejestracja nie powiodła się")
-        setAlertInfo({
-            title: "Rejestracja nie powidła się",
-            content: "Kontent"
-        })
+    const registrationRejected = (response) => {
+        if(response.response.status === 500)
+            setAlertInfo({
+                title: "Rejestracja nie powidła się",
+                content: "Kod błędu 500: Problem z serwerem"
+            })
+        else if(response.response.status === 409)
+            setAlertInfo({
+                title: "Rejestracja nie powidła się",
+                content: "Kod błędu 409: Login już zajęty"
+            })
+        else setAlertInfo({
+                title: "Rejestracja nie powidła się",
+                content: "Kod błędu "+response.code+" : Nieznany błąd"
+            })
+
         handleClickOpen();
     }
 
     const registerUser = async () => {
-        // setIsBLockerOut(blockerDisplayOption.visable)
+        setIsBLockerOut(blockerDisplayOption.visable)
 
-        // if( ValidateForm() === true){
-        //     await UserUtlis.requestUserRegistration(
-        //         {
-        //             login: formValues.login,
-        //             email: formValues.email,
-        //             password: formValues.password
-        //         },
-        //         registrationSettled,
-        //         registrationRejected,
-        //     )
-        // }
+        if( ValidateForm() === true){
+            await UserRequests.RequestUserRegistration(
+                {
+                    userName: formValues.login,
+                    password: String(formValues.password)
+                },
+                registrationSettled,
+                registrationRejected,
+            )
+        }
 
-        // setIsBLockerOut(blockerDisplayOption.hidden)
+        setIsBLockerOut(blockerDisplayOption.hidden)
     }
 
     const clearForm = () => {
         setFormValues({
             login: "",
-            email: "",
-            confirmEmail: "",
             password: "",
             confirmPassword: ""
         });
@@ -195,6 +188,7 @@ const RegisterPage = () => {
                         />
                     
                     <TextField
+                        type="password"
                         required
                         id="password"
                         name="password"
@@ -206,6 +200,7 @@ const RegisterPage = () => {
                         />
                     
                     <TextField
+                        type="password"
                         required
                         id="confirmPassword"
                         name="confirmPassword"

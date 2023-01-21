@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 // import { toggleLogin } from '../store/loginSlice';
 import { useDispatch } from 'react-redux';
 import SimpleAlert from '../../reusable/simple_alert/SimpleAlert';
+import UserRequests from '../../reusable/UserRequests';
+import { toggleLogin } from '../../../store/loginSlice';
 
 const SignInPage = () => {
 
@@ -46,6 +48,9 @@ const SignInPage = () => {
         '& .MuiFormLabel-root': {
             color: '#00C9C7'
         },
+        '& .MuiInputBase-input': {
+            color: 'white',
+        },
         '&:hover .MuiFormLabel-root': {
             color: 'white',
             },
@@ -74,42 +79,44 @@ const SignInPage = () => {
         password: "",
     });
 
-    // const SignInSettled = (response) => {
-    //     console.log("Logowanie powidło się")
-    //     if( response.data.password === formValues.password ){
-    //         navigate("/access/dashboard");
-    //         dispatch(toggleLogin (formValues.login))
-    //     } else registrationRejected()
-    // }
-
-    // const SignInRejected = () => {
-    //     console.log("Logowanie nie powidło się")
-    //     setAlertInfo({
-    //         title: "Logowanie nie powiodło się",
-    //         content: ""
-    //     })
-    //     handleClickOpen();
-    // }
-
     const handleInputChange = (e) => {
-            const { name, value } = e.target;
-            setFormValues({
-            ...formValues,
-            [name]: value,
-            });
-        };
+        const { name, value } = e.target;
+        setFormValues({
+        ...formValues,
+        [name]: value,
+        });
+    };
+
+    // Handle Registration
+    const SignInSettled = (response) => {
+        console.log("Logowanie powidło się")
+        if( response.data.password === formValues.password ){
+            dispatch(toggleLogin (formValues.login))
+            navigate("/app/chat");
+        } else SignInRejected()
+    }
+
+    const SignInRejected = () => {
+        console.log("Logowanie nie powidło się")
+        setAlertInfo({
+            title: "Logowanie nie powiodło się",
+            content: ""
+        })
+        handleClickOpen();
+    }
 
     const LogIn = async () => {
-        // setIsBLockerOut(blockerDisplayOption.visable)
+        setIsBLockerOut(blockerDisplayOption.visable)
 
-        // await UserUtlis.requestLogIn(
-        //     { login: formValues.login },
-        //     SignInSettled,
-        //     SignInRejected,
-        // )
+        await UserRequests.RequestUserCredintionals(
+            formValues.login,
+            SignInSettled,
+            SignInRejected,
+        )
 
-        // setIsBLockerOut(blockerDisplayOption.hidden)
+        setIsBLockerOut(blockerDisplayOption.hidden)
     }
+
 
     return (
         <div>
@@ -126,6 +133,7 @@ const SignInPage = () => {
                         onChange={handleInputChange}
                         />
                     <TextField
+                        type="password"
                         required
                         id="password"
                         name="password"

@@ -55,7 +55,11 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Optional<UserDto> findOneUserByUserName(String userName) {
-        return Optional.ofNullable(userMapper.convert(userRepository.findByUserName(userName)));
+        Optional<UserEti> userEtiOptional = Optional.ofNullable(userRepository.findByUserName(userName));
+        if( userEtiOptional.isEmpty())
+            return Optional.empty();
+
+        return Optional.ofNullable(userMapper.convert(userEtiOptional.get()));
     }
 
     @Override
@@ -77,11 +81,11 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Boolean saveUser(NewUserDto newUserDto) {
-        UserEti newUser = newUserMapper.convert(newUserDto);
-        List<UserDto> users = findAllUsers();
-        if ( users.contains(userMapper.convert(newUser)) )
-            return true;
+        Optional<UserDto> userDtoOptional = findOneUserByUserName(newUserDto.getUserName());
+        if ( userDtoOptional.isPresent() )
+            return false;
 
+        UserEti newUser = newUserMapper.convert(newUserDto);
         LOGGER.info(newUser.getStatus().getClass().toString());
         UserEti savedUser = userRepository.save(newUser);
         return savedUser.getUserName() == newUserDto.getUserName();
