@@ -1,0 +1,12 @@
+
+.chat-container {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(100vh - 75px);
+  background-color: #8B8A8A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}

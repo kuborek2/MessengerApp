@@ -28,9 +28,9 @@ const FrontPage = () => {
     const LoggedInUserButton = () => {
         return (
             <div className='buttonSpace'>
-                <Link to="access/dashboard">
+                <Link to="/app/chat">
                     <button className="navButton">
-                        Go to Dashboard
+                        Go to Chat
                     </button>
                 </Link>
             </div>

@@ -16,6 +16,16 @@
     width: fit-content;
 }
 
+.top-navigation-layout > .userControlButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.top-navigation-layout > .userControlButtons > button {
+    margin-right: 1vw;
+}
 @keyframes header_anim {
     from {color: #00C9C7}
     to {color: white;}

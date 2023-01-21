@@ -91,7 +91,7 @@ const SignInPage = () => {
     const SignInSettled = (response) => {
         console.log("Logowanie powidło się")
         if( response.data.password === formValues.password ){
-            dispatch(toggleLogin (formValues.login))
+            dispatch(toggleLogin(formValues.login))
             navigate("/app/chat");
         } else SignInRejected()
     }
