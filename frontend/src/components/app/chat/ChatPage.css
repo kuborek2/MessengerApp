@@ -14,13 +14,18 @@
 }
 
 .users-list {
-  height: calc(100%);
+  height: calc(100% - 4vw);
   overflow: auto;
   width: 30%;
   background-color: rgb(89, 88, 88, 0.5);
   border-width: 3px;
   border-top-left-radius: 3vw;
   border-bottom-left-radius: 3vw;
+  padding: 2vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: top;
+  align-items: center;
 }
 
 .chat-box {

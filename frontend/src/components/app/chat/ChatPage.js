@@ -1,6 +1,7 @@
 import { FilledInput, FormControl, InputAdornment, InputLabel, TextField } from '@mui/material';
 import { useState } from 'react';
 import './ChatPage.css'
+import UserListElement from './usersListElement/UserListElement.js';
 
 const ChatPage = () => {
 
@@ -18,6 +19,27 @@ const ChatPage = () => {
     '& .MuiInputBase-root': {
       backgroundColor: 'white',
       },
+    '&:hover .MuiInputBase-root': {
+      backgroundColor: 'white',
+      '& .MuiInputBase-root:before': {
+        borderBottom: '1px solid #00C9C7',
+        },
+      '& .MuiInputBase-root:after': {
+        borderBottom: '1px solid #00C9C7',
+        },
+      },
+    '& .MuiInputBase-root.Mui-focused': {
+      backgroundColor: 'white',
+      '& .MuiInputBase-root:before': {
+        borderBottom: '1px solid #00C9C7',
+        },
+      '& .MuiInputBase-root:after': {
+        borderBottom: '1px solid #00C9C7',
+        },
+      '& .MuiFormLabel-root': {
+        color: 'black',
+        },
+      },
     '& .MuiInputBase-root:before': {
       borderBottom: '1px solid #00C9C7',
       },
@@ -26,13 +48,20 @@ const ChatPage = () => {
       },
     '& .MuiFormLabel-root': {
       color: 'black',
-      }
+      },
+    // '& label.Mui-focused': {
+    //   color: 'black',
+    //   },
     }
 
   return (
     <div className="chat-container">
       <div className="users-list">
-
+        <UserListElement 
+          imageSrc={"https://steamuserimages-a.akamaihd.net/ugc/938339513159173288/2A192A5863DF25EDF9C83AA2E92F5205DB5D3649/?imw=512&imh=442&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true"}
+          userName="Jakub" 
+          statusColor="red"/>
+        <div>Yes</div>
       </div>
       <div className="chat-box">
         <div>

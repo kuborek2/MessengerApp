@@ -1,0 +1,43 @@
+
+.user-list-element-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 17vw;
+  background-color: #00C9C7;
+  border-radius: 3vw;
+  margin-bottom: 2vh;
+}
+
+.user-list-element-container > div {
+  position: relative;
+  transform: translate(-1vw);
+  height: fit-content;
+  width: fit-content;
+  margin: 0.5vw;
+  margin-right: 1vw;
+  margin-left: 1vw;
+}
+
+.user-list-element-container > div > img {
+  height: 4vw;
+  width: 4vw;
+  border-radius: 4vw;
+  border: 2px solid #8B8A8A;
+}
+
+.user-list-element-container > div .user-status {
+  position: absolute;
+  left: 2.75vw;
+  top: 2.75vw;
+  height: 1.5vw;
+  width: 1.5vw;
+  border-radius: 1.5vw;
+}
+
+.user-list-element-container > h1 {
+  transform: translate(-1vw);
+  align-self: center;
+  font-size: 2em;
+}
