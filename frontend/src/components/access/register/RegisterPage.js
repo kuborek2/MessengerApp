@@ -30,7 +30,8 @@ const RegisterPage = () => {
     const [formValues, setFormValues] = useState({
         login: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        imageSrc: "",
     });
 
     const handleInputChange = (e) => {
@@ -71,18 +72,6 @@ const RegisterPage = () => {
             color: 'white',
             },
         }
-    const [formStyleValues, setFormStyleValues] = useState({
-        login: {},
-        password: {},
-        confirmPassword: {}
-    });
-
-    const handleStyleValues = (name, value) => {
-            setFormStyleValues({
-            ...formStyleValues,
-            [name]:  {fieldset: {borderColor: value}},
-            });
-        };
 
     const ValidateForm = () => {
         let invalidInputColor = "red"
@@ -153,7 +142,8 @@ const RegisterPage = () => {
             await UserRequests.RequestUserRegistration(
                 {
                     userName: formValues.login,
-                    password: String(formValues.password)
+                    password: String(formValues.password),
+                    imageSrc: formValues.imageSrc,
                 },
                 registrationSettled,
                 registrationRejected,
@@ -208,6 +198,17 @@ const RegisterPage = () => {
                         sx={styleForTextFields}
                         margin="normal"
                         value={formValues.confirmPassword}
+                        onChange={handleInputChange}
+                        />
+
+                    <TextField
+                        required
+                        id="imageSrc"
+                        name="imageSrc"
+                        label="Profile Picture link"
+                        sx={styleForTextFields}
+                        margin="normal"
+                        value={formValues.imageSrc}
                         onChange={handleInputChange}
                         />
 

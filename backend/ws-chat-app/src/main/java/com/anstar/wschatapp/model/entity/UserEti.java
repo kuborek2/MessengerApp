@@ -27,4 +27,7 @@ public class UserEti {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "image_src")
+    private String imageSrc;
+
 }

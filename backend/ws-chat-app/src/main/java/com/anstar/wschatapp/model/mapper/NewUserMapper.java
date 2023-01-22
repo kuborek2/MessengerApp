@@ -14,6 +14,7 @@ public class NewUserMapper implements Converter<NewUserDto, UserEti> {
                 .userName(source.getUserName())
                 .status(UserEti.UserStatus.offline)
                 .password(source.getPassword())
+                .imageSrc(source.getImageSrc())
                 .build();
     }
 

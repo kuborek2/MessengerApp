@@ -10,7 +10,7 @@ import lombok.*;
 public class NewUserDto {
     private String userName;
     private String password;
-
+    private String imageSrc;
 }
 
 

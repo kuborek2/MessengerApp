@@ -16,7 +16,7 @@
 .users-list {
   height: calc(100% - 4vw);
   overflow: auto;
-  width: 30%;
+  width: 20%;
   background-color: rgb(89, 88, 88, 0.5);
   border-width: 3px;
   border-top-left-radius: 3vw;
@@ -31,7 +31,7 @@
 .chat-box {
   height: calc(100%);
   overflow: auto;
-  width: 70%;
+  width: 80%;
   /* background-color: rgb(89, 88, 88, 0.5); #00C9C7 */
   border-width: 3px;
   border-top-right-radius: 3vw;

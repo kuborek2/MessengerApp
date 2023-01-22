@@ -14,6 +14,7 @@ public class UserMapper implements Converter<UserEti, UserDto> {
                 .userName(source.getUserName())
                 .status(source.getStatus())
                 .password(source.getPassword())
+                .imageSrc(source.getImageSrc())
                 .build();
     }
 

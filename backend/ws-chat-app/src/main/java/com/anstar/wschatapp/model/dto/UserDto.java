@@ -15,5 +15,7 @@ public class UserDto {
     private UserEti.UserStatus status;
 
     private String password;
+
+    private String imageSrc;
 }
 

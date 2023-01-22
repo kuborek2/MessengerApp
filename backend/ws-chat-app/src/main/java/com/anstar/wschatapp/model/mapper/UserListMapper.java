@@ -20,6 +20,7 @@ public List<UserDto> convert(List<UserEti> users) {
                 return UserDto.builder()
                     .userName(source.getUserName())
                     .status(source.getStatus())
+                    .imageSrc(source.getImageSrc())
                     .build();
             }))
             .collect(Collectors.toList());

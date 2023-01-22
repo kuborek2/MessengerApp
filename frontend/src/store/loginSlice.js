@@ -2,7 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     isUserLoggedIn: false,
-    userName: ""
+    userName: "",
+    userObject: {
+        userName: "",
+        password: "",
+        status: "",
+        imageSrc: ""
+    }
 }
 
 const loginSlice = createSlice({
@@ -11,7 +17,8 @@ const loginSlice = createSlice({
     reducers: {
         toggleLogin: (state, action) => {
             state.isUserLoggedIn = !(state.isUserLoggedIn)
-            state.userName = action.payload
+            state.userObject = action.payload
+            state.userName = action.payload.userName;
         },
     },
 });
