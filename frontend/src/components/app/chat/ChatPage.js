@@ -1,10 +1,45 @@
-import { FilledInput, FormControl, InputAdornment, InputLabel, TextField } from '@mui/material';
-import { useState } from 'react';
+import { CircularProgress, FilledInput, FormControl, InputAdornment, InputLabel } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUsersList } from '../../../store/chatSlice';
+import SimpleAlert from '../../reusable/simple_alert/SimpleAlert';
+import UserRequests from '../../reusable/UserRequests';
 import './ChatPage.css'
 import UsersList from './usersList/UsersList';
-import UserListElement from './usersListElement/UserListElement.js';
+
 
 const ChatPage = () => {
+
+  const login = useSelector(state => state.login)
+  const chat = useSelector(state => state.chat)
+  const dispatch = useDispatch();
+
+  // Visiability of loading screen control
+  const blockerDisplayOption = {
+    visable: {
+        display: "flex"
+    },
+    hidden:  {
+        display: "none"
+    }
+  }
+  
+  const [isBlockerOut, setIsBLockerOut] = useState(blockerDisplayOption.hidden)
+
+  //Alert control
+  const [open, setOpen] = useState(false);
+  const [alertInfo, setAlertInfo] = useState({
+      title: "",
+      content: ""
+  })
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   // Input message hanldeing
   const [inputMessage, setInputMessage] = useState("")
@@ -55,28 +90,38 @@ const ChatPage = () => {
     //   },
     }
 
-  const initalList = [
-    {
-      imageSrc: "https://steamuserimages-a.akamaihd.net/ugc/938339513159173288/2A192A5863DF25EDF9C83AA2E92F5205DB5D3649/?imw=512&imh=442&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-      userName: "Jakub",
-      statusColor: "red",
-    },
-    {
-      imageSrc: "https://steamuserimages-a.akamaihd.net/ugc/938339513159173288/2A192A5863DF25EDF9C83AA2E92F5205DB5D3649/?imw=512&imh=442&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-      userName: "Grzegorz",
-      statusColor: "green",
-    },
-  ]
+  // Request user Data
+  const requestUserDataSettled = (response) => {
+    if( response.status === 200 ){
+      dispatch(setUsersList(response.data))
+    }
+  }
+
+  const requestUserDataRejected = (response) => {
+    setAlertInfo({
+      title: "Users data request failed",
+      content: "Error code: "+response.status
+    })
+    handleClickOpen();
+  }
+
+  useEffect(() => {
+    if( login.isUserLoggedIn){
+        setIsBLockerOut(blockerDisplayOption.visable)
+        UserRequests.RequestAllUsersData(requestUserDataSettled, requestUserDataRejected)
+        setIsBLockerOut(blockerDisplayOption.hidden)
+    }
+}, [login])
 
   return (
     <div className="chat-container">
       <div className="users-list">
-        <UsersList list={initalList}/>
+        <UsersList list={chat.usersList}/>
       </div>
       <div className="chat-box">
         <div>
           <div className="messages-box">
-
+            
           </div>
           <div className='input-box'>
             <FormControl fullWidth sx={inputStyle} variant="filled">
@@ -96,6 +141,14 @@ const ChatPage = () => {
           </div>
         </div>
       </div>
+      <div className='loadingBlocker' style={isBlockerOut}>
+        <CircularProgress />
+      </div>
+      <SimpleAlert
+                open={open}
+                onClose={handleClose}
+                info={alertInfo}
+            />
     </div>
   )
 }

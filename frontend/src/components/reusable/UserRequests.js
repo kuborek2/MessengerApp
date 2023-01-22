@@ -18,4 +18,12 @@ const RequestUserRegistration = (newUserObject, funcSettled, funcRejected) => {
     .catch((err) => {console.log(err)})
 }
 
-export default { RequestUserCredintionals, RequestUserRegistration };
+const RequestAllUsersData = (funcSettled, funcRejected) => {
+  return axios({
+    method: 'get',
+    url: 'http://localhost:8080/users',
+  }).then(funcSettled, funcRejected)
+    .catch((err) => {console.log(err)})
+}
+
+export default { RequestUserCredintionals, RequestUserRegistration, RequestAllUsersData };

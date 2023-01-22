@@ -89,7 +89,6 @@ const SignInPage = () => {
 
     // Handle Registration
     const SignInSettled = (response) => {
-        console.log("Logowanie powidło się")
         if( response.data.password === formValues.password ){
             dispatch(toggleLogin(response.data))
             navigate("/app/chat");
@@ -97,7 +96,6 @@ const SignInPage = () => {
     }
 
     const SignInRejected = () => {
-        console.log("Logowanie nie powidło się")
         setAlertInfo({
             title: "Logowanie nie powiodło się",
             content: ""

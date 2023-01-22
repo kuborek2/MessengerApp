@@ -1,5 +1,6 @@
 
 .user-list-element-container {
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -11,8 +12,13 @@
   margin-bottom: 2vh;
 }
 
+/* .user-list-element-container:hover {
+  background-color: rgb(0, 201, 199, 0.5);
+} */
+
 .user-list-element-container > div {
-  position: relative;
+  position: absolute;
+  left: 1vw;
   transform: translate(-1vw);
   height: fit-content;
   width: fit-content;
@@ -38,7 +44,12 @@
 }
 
 .user-list-element-container > h1 {
-  transform: translate(-1vw);
+  position: absolute;
+  left: 5vw;
   align-self: center;
-  font-size: 1.3em;
+  font-size: 1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 8vw;
+  white-space: nowrap;
 }
