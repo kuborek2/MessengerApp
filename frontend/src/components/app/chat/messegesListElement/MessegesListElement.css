@@ -1,0 +1,83 @@
+
+.messeges-list-element-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+  max-width: 40vw;
+  min-width: 10vw;
+  /* height: 8vh; */
+  margin: 0.3vh;
+}
+
+.messeges-list-element-container > div.img-container {
+  height: fit-content;
+  width: fit-content;
+  margin: 0.1vw;
+  margin-right: 1vw;
+  margin-left: 1vw;
+}
+
+.messeges-list-element-container > div > img {
+  height: 2.25vw;
+  width: 2.25vw;
+  border-radius: 2vw;
+  border: 2px solid #8B8A8A;
+}
+
+.messeges-list-element-container > div.message-container {
+  align-self: flex-start;
+  height: fit-content;
+  border-radius: 1vw;
+  margin-bottom: 2vh;
+  max-width: 100%;
+}
+
+.messeges-list-element-container > div > h4 {
+  align-self: flex-start;
+  align-self: center;
+  font-size: 0.75em;
+  word-wrap: break-word;
+  max-width: 100%;
+  margin: 2vh;
+}
+/* LEFT MESSAGE */
+
+.left {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.left > .messeges-list-element-container > div.img-container {
+  position: absolute;
+  left: 1vw;
+  transform: translate(-1vw);
+}
+
+.left > .messeges-list-element-container > div.message-container {
+  transform: translate(4vw);
+  background-color: rgb(255, 255, 255, 1);
+}
+
+/* RIGHT MESSAGE */
+
+.right {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.right > .messeges-list-element-container > div.message-container {
+  transform: translate(-4vw);
+  background-color: rgb(89, 88, 88, 0.5);
+  color: white
+}
+
+.right > .messeges-list-element-container > div.img-container {
+  position: absolute;
+  right: 1vw;
+  transform: translate(1vw);
+}

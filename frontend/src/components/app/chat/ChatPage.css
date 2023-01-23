@@ -54,9 +54,13 @@
 }
 
 .chat-box > div > .messages-box {
+  position: relative;
+  padding: 2vw;
   border-top-right-radius: 1vw;
   height: calc(100% - 50px);
-  width: 100%;
+  width: calc(100% - 4vw);
+  max-width: calc(100% - 4vw);;
+  overflow: auto;
 }
 
 .chat-box > div > .input-box {

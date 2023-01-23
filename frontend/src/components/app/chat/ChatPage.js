@@ -5,6 +5,8 @@ import { setUsersList } from '../../../store/chatSlice';
 import SimpleAlert from '../../reusable/simple_alert/SimpleAlert';
 import UserRequests from '../../reusable/UserRequests';
 import './ChatPage.css'
+import MessegesList from './messegesList/MessegesList';
+import MessegesListElement from './messegesListElement/MessegesListElement';
 import UsersList from './usersList/UsersList';
 
 
@@ -111,7 +113,74 @@ const ChatPage = () => {
         UserRequests.RequestAllUsersData(requestUserDataSettled, requestUserDataRejected)
         setIsBLockerOut(blockerDisplayOption.hidden)
     }
-}, [login])
+  }, [login])
+
+  const intialList = [
+    {
+      messageId: 1,
+      senderName: 'jakub',
+      receiverNam: "testUser",
+      message: "hi testUser from jakub",
+      messageDate: null,
+      status: "MESSAGE",
+    },
+    {
+      messageId: 2,
+      senderName: "testUser",
+      receiverNam: "jakub",
+      message: "hi jakub from testUser",
+      messageDate: null,
+      status: "MESSAGE",
+    },
+    {
+      messageId: 1,
+      senderName: 'jakub',
+      receiverNam: "testUser",
+      message: "hi testUser from jakub",
+      messageDate: null,
+      status: "MESSAGE",
+    },
+    {
+      messageId: 2,
+      senderName: "testUser",
+      receiverNam: "jakub",
+      message: "hi jakub from testUser",
+      messageDate: null,
+      status: "MESSAGE",
+    },
+    {
+      messageId: 1,
+      senderName: 'jakub',
+      receiverNam: "testUser",
+      message: "hi testUser from jakub",
+      messageDate: null,
+      status: "MESSAGE",
+    },
+    {
+      messageId: 1,
+      senderName: 'jakub',
+      receiverNam: "testUser",
+      message: "hi testUser from jakub",
+      messageDate: null,
+      status: "MESSAGE",
+    },
+    {
+      messageId: 1,
+      senderName: 'jakub',
+      receiverNam: "testUser",
+      message: "hi testUser from jakub",
+      messageDate: null,
+      status: "MESSAGE",
+    },
+    {
+      messageId: 2,
+      senderName: "testUser",
+      receiverNam: "jakub",
+      message: "hi jakub from testUser",
+      messageDate: null,
+      status: "MESSAGE",
+    },
+  ]
 
   return (
     <div className="chat-container">
@@ -121,7 +190,7 @@ const ChatPage = () => {
       <div className="chat-box">
         <div>
           <div className="messages-box">
-            
+            <MessegesList list={intialList}/>
           </div>
           <div className='input-box'>
             <FormControl fullWidth sx={inputStyle} variant="filled">
