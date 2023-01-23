@@ -38,7 +38,7 @@ const UserListElement = ({props, imageSrc, userName, statusColor}) => {
   return (
     <div className='user-list-element-container' style={colorOfElemnt} onClick={() => handleClick()}>
       <div>
-        <img src={imageSrc} alt=""/>
+        <img src={imageSrc === "" ? "https://cdn-icons-png.flaticon.com/512/259/259987.png" : imageSrc} alt=""/>
         <div className="user-status" style={{ backgroundColor: statusColor }}/>
       </div>
       <h1>{userName}</h1>

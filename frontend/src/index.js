@@ -15,6 +15,9 @@ import RegisterPage from './components/access/register/RegisterPage';
 import SignInPage from './components/access/signin/SignInPage'
 import AppPage from './components/app/AppPage';
 import ChatPage from './components/app/chat/ChatPage';
+import { enableMapSet } from 'immer';
+
+enableMapSet();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

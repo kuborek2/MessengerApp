@@ -29,25 +29,33 @@ const UsersList = ({ list }) => {
     }
   }
 
+  const chatRoom = {
+    userName: "CHATROOM",
+    status: "online",
+    imageSrc: "https://cdn-icons-png.flaticon.com/512/259/259987.png"
+  }
+
   if( list && list.length <= 0 ){
       return (<></>);
   } else {
-      let result = list.map((elem) => {
-          if ( typeof elem === 'object' ){
-              let keys = Object.keys(elem);
-              if( keys.includes("userName") && keys.includes("status") && keys.includes("imageSrc") ){
-                  return (
-                    <UserListElement
-                      key={elem.userName}
-                      imageSrc={elem.imageSrc}
-                      userName={elem.userName} 
-                      statusColor={userStatusToStatusColor(elem.status)}/>
-                  );
-              }
-          }
-          return '';
-      })
-      return result;
+    console.log(list)
+    let actuallList = [chatRoom,...list]
+    let result = actuallList.map((elem) => {
+      if ( typeof elem === 'object' ){
+        let keys = Object.keys(elem);
+        if( keys.includes("userName") && keys.includes("status") && keys.includes("imageSrc") ){
+          return (
+            <UserListElement
+              key={elem.userName}
+              imageSrc={elem.imageSrc}
+              userName={elem.userName} 
+              statusColor={userStatusToStatusColor(elem.status)}/>
+          );
+        }
+      }
+      return '';
+    })
+    return result;
   }
 }
 

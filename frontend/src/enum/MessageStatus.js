@@ -1,9 +1,9 @@
 
-const Status = {
+const MessageStatus = {
   JOIN: "JOIN",
   NOTICE: "NOTICE",
   MESSAGE: "MESSAGE",
   LEAVE: "LEAVE"
 }
 
-export default Status;
+export default MessageStatus;

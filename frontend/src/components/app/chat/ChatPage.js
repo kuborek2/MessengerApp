@@ -1,14 +1,17 @@
 import { CircularProgress, FilledInput, FormControl, InputAdornment, InputLabel } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUsersList } from '../../../store/chatSlice';
+import { addChatRoom, pushToChatRoom, setChatRooms, setUsersList } from '../../../store/chatSlice';
 import SimpleAlert from '../../reusable/simple_alert/SimpleAlert';
 import UserRequests from '../../reusable/UserRequests';
 import './ChatPage.css'
 import MessegesList from './messegesList/MessegesList';
-import MessegesListElement from './messegesListElement/MessegesListElement';
 import UsersList from './usersList/UsersList';
+import MessageStatus from '../../../enum/MessageStatus';
+import { over } from 'stompjs';
+import SockJS from 'sockjs-client';
 
+var stompClient = null;
 
 const ChatPage = () => {
 
@@ -92,10 +95,75 @@ const ChatPage = () => {
     //   },
     }
 
+  // Chat handeling
+
+  const OnError = (err) => {
+    console.log(err);
+  }
+
+  const OnConnected = () => {
+    stompClient.subscribe('/chatroom/public', OnPublicMessageReceived);
+    // stompClient.subscribe('/user/'+userData.username+'/private', onPrivateMessage);
+    userJoin();
+  }
+
+  const Connect = () => {
+    let Sock = new SockJS('http://localhost:8080/ws');
+    stompClient = over(Sock);
+    stompClient.connect({}, OnConnected, OnError);
+  }
+
+  // messages handeling
+
+  const OnPublicMessageReceived = (payload)=>{
+    const payloadData = JSON.parse(payload.body);
+    switch( payloadData.status ){
+      case MessageStatus.JOIN:
+        if(!chat.chatRooms.get(payloadData.senderName)){
+            dispatch(addChatRoom({name: payloadData.senderName, list: []}));
+        }
+        sendNoticeMessage();
+        break;
+
+      case MessageStatus.MESSAGE:
+        dispatch(pushToChatRoom({chatName: "CHATROOM",chatMessage: payloadData}));
+        break;
+
+      case MessageStatus.NOTICE:
+        if(!chat.chatRooms.get(payloadData.senderName))
+          UserRequests.RequestAllUsersData(requestUserDataSettled, requestUserDataRejected)
+        break;
+
+      case MessageStatus.LEAVE:
+        break; 
+    }
+  }
+
+  // sending message
+
+  const userJoin = () => {
+    var chatMessage = {
+      senderName: login.userName,
+      status: MessageStatus.JOIN
+    };
+    stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+  }
+
+  const sendNoticeMessage = () => {
+    var chatMessage = {
+        senderName: login.userName,
+        status: MessageStatus.NOTICE
+      };
+    stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+  }
+
   // Request user Data
   const requestUserDataSettled = (response) => {
     if( response.status === 200 ){
       dispatch(setUsersList(response.data))
+      response.data.map((elem) => {
+        dispatch(addChatRoom({name: elem.userName, list: []}));
+      })
     }
   }
 
@@ -133,6 +201,17 @@ const ChatPage = () => {
       status: "MESSAGE",
     },
   ]
+
+  const StartChat = () => {
+    Connect();
+    // getAllPreviousPriavteMessages();
+    // getAllPreviousPublicMessages();
+  }
+
+  useEffect(() => {
+    if( login.userName !== "" )
+      StartChat();
+  }, [ login.userName ])
 
   return (
     <div className="chat-container">

@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     selectedUserName: "",
-    usersList: []
+    usersList: [],
+    chatRooms: new Map([['CHATROOM',[]]]),
 }
 
 const chatSlice = createSlice({
@@ -15,9 +16,18 @@ const chatSlice = createSlice({
         setUsersList: (state, action) => {
           state.usersList = action.payload
         },
+        setChatRooms: (state, action) => {
+          state.chatRooms = action.payload
+        },
+        addChatRoom: (state, action) => {
+          state.chatRooms.set(action.payload.name, action.payload.list)
+        },
+        pushToChatRoom: (state, action) => {
+          state.chatRooms.get(action.payload.chatName).push(action.payload.chatMessage)
+        },
     },
 });
 
-export const { setSelectedUserName, setUsersList } = chatSlice.actions;
+export const { setSelectedUserName, setUsersList, setChatRooms, addChatRoom, pushToChatRoom } = chatSlice.actions;
 
 export default chatSlice.reducer;
