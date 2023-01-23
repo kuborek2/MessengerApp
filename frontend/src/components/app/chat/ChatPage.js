@@ -10,6 +10,7 @@ import UsersList from './usersList/UsersList';
 import MessageStatus from '../../../enum/MessageStatus';
 import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
+import axios from "axios"
 
 var stompClient = null;
 
@@ -115,6 +116,10 @@ const ChatPage = () => {
 
   // messages handeling
 
+  const handlePreviousPublicMessage = (message) => {
+    dispatch(pushToChatRoom({chatName: "CHATROOM",chatMessage: message}));
+  }
+
   const OnPublicMessageReceived = (payload)=>{
     const payloadData = JSON.parse(payload.body);
     switch( payloadData.status ){
@@ -123,6 +128,7 @@ const ChatPage = () => {
             dispatch(addChatRoom({name: payloadData.senderName, list: []}));
         }
         sendNoticeMessage();
+        //TODO: Zmien status goscia
         break;
 
       case MessageStatus.MESSAGE:
@@ -135,6 +141,7 @@ const ChatPage = () => {
         break;
 
       case MessageStatus.LEAVE:
+        //TODO: Zmien status goscia
         break; 
     }
   }
@@ -157,7 +164,35 @@ const ChatPage = () => {
     stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
   }
 
+  const sendMessage = () => {
+    if (stompClient) {
+      if( chat.selectedUserName === "CHATROOM" ){
+        const chatMessage = {
+          senderName: login.userName,
+          message: inputMessage,
+          status: MessageStatus.MESSAGE
+        };
+        console.log(chatMessage);
+
+        stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+        setInputMessage("");
+      }
+    }
+  }
+
+  // request messeges
+
+    const getAllPreviousPublicMessages = () => {
+      axios.get(`http://localhost:8080/messages?userName=null`)
+          .then(res => {
+              const messages = res.data;
+              console.log(messages)
+              messages.map((message) => handlePreviousPublicMessage(message))
+          })
+    }
+
   // Request user Data
+
   const requestUserDataSettled = (response) => {
     if( response.status === 200 ){
       dispatch(setUsersList(response.data))
@@ -205,7 +240,7 @@ const ChatPage = () => {
   const StartChat = () => {
     Connect();
     // getAllPreviousPriavteMessages();
-    // getAllPreviousPublicMessages();
+    getAllPreviousPublicMessages();
   }
 
   useEffect(() => {
@@ -221,7 +256,7 @@ const ChatPage = () => {
       <div className="chat-box">
         <div>
           <div className="messages-box">
-            <MessegesList list={intialList}/>
+            <MessegesList list={chat.chatRooms}/>
           </div>
           <div className='input-box'>
             <FormControl fullWidth sx={inputStyle} variant="filled">
@@ -235,7 +270,7 @@ const ChatPage = () => {
                 startAdornment={<InputAdornment position="start"></InputAdornment>}
                 />
             </FormControl>
-            <button className='navButton'>
+            <button className='navButton' onClick={() => sendMessage()}>
               Send
             </button>
           </div>
