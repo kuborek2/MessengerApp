@@ -124,6 +124,27 @@ const ChatPage = () => {
 
   // messages handeling
 
+  const handlePreviousMessage = (message) => {
+    if( message.senderName != login.userName 
+      && chat.chatRooms.findIndex((x) => x.name === message.senderName) === -1){
+        dispatch(addChatRoom({name: message.senderName, list: []}));
+    }
+
+    let destinationUser;
+    if( message.senderName == login.userName )
+        destinationUser = message.receiverName;
+    else 
+        destinationUser = message.senderName;
+
+    // if(chat.chatRooms.findIndex((x) => x.name === destinationUser) !== -1){
+      dispatch(pushToChatRoom({chatName: destinationUser,chatMessage: message}));
+    // }else{
+    //     let list =[];
+    //     list.push(message);
+    //     dispatch(addChatRoom({name: destinationUser, list: list}));
+    // }
+  }
+
   const handlePreviousPublicMessage = (message) => {
     dispatch(pushToChatRoom({chatName: "CHATROOM",chatMessage: message}));
   }
@@ -156,8 +177,10 @@ const ChatPage = () => {
 
   const onPrivateMessage = (payload)=>{
     var payloadData = JSON.parse(payload.body);
-    console.log(payload)
-    if(chat.chatRooms.findIndex((x) => x.name === payloadData.senderName) !== -1){
+    const test = chat.chatRooms.findIndex((x) => x.name === payloadData.senderName) !== -1;
+    if( payloadData.senderName === login.senderName ){
+
+    } else if(test){
       dispatch(pushToChatRoom({chatName: payloadData.senderName,chatMessage: payloadData}));
     } else {
       dispatch(addChatRoom({name: payloadData.senderName, list: []}));
@@ -221,14 +244,23 @@ const ChatPage = () => {
 
   // request messeges
 
-    const getAllPreviousPublicMessages = () => {
-      axios.get(`http://localhost:8080/messages?userName=null`)
-          .then(res => {
-              const messages = res.data;
-              console.log(messages)
-              messages.map((message) => handlePreviousPublicMessage(message))
-          })
-    }
+  const getAllPreviousPublicMessages = () => {
+    axios.get(`http://localhost:8080/messages?userName=null`)
+        .then(res => {
+            const messages = res.data;
+            console.log(messages)
+            messages.map((message) => handlePreviousPublicMessage(message))
+        })
+  }
+
+  const getAllPreviousPriavteMessages = () => {
+    axios.get(`http://localhost:8080/messages?userName=`+login.userName)
+        .then(res => {
+            const messages = res.data;
+            console.log(messages)
+            messages.map((message) => handlePreviousMessage(message))
+        })
+  }
 
   // Request user Data
 
@@ -295,14 +327,15 @@ const ChatPage = () => {
     changeUserStatusInStore(login.userName, "online")
     UserRequests.RequestUserStatusChange(login.userName, "online")
     Connect();
-    // getAllPreviousPriavteMessages();
+    getAllPreviousPriavteMessages();
     getAllPreviousPublicMessages();
   }
 
   useEffect(() => {
-    if( login.userName !== "" )
+    if( login.userName !== ""){
       StartChat();
-  }, [ login.userName ])
+    }
+  }, [])
 
   return (
     <div className="chat-container">
