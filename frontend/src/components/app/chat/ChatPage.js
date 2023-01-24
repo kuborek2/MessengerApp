@@ -1,7 +1,7 @@
 import { CircularProgress, FilledInput, FormControl, InputAdornment, InputLabel } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addChatRoom, pushToChatRoom, setChatRooms, setUsersList } from '../../../store/chatSlice';
+import { addChatRoom, changeUserStatus, pushToChatRoom, setChatRooms, setStompClient, setUsersList } from '../../../store/chatSlice';
 import SimpleAlert from '../../reusable/simple_alert/SimpleAlert';
 import UserRequests from '../../reusable/UserRequests';
 import './ChatPage.css'
@@ -96,6 +96,13 @@ const ChatPage = () => {
     //   },
     }
 
+  // change user status
+  const changeUserStatusInStore = (userName, status) => {
+    let index = chat.usersList.findIndex((elem) => elem.userName === userName)
+    if( index !== -1 )
+      dispatch(changeUserStatus({index: index, newStatus: status}));
+  }
+
   // Chat handeling
 
   const OnError = (err) => {
@@ -103,7 +110,7 @@ const ChatPage = () => {
   }
 
   const OnConnected = () => {
-    stompClient.subscribe('/chatroom/public', OnPublicMessageReceived);
+    chat.stompClient.subscribe('/chatroom/public', OnPublicMessageReceived);
     // stompClient.subscribe('/user/'+userData.username+'/private', onPrivateMessage);
     userJoin();
   }
@@ -112,6 +119,7 @@ const ChatPage = () => {
     let Sock = new SockJS('http://localhost:8080/ws');
     stompClient = over(Sock);
     stompClient.connect({}, OnConnected, OnError);
+    dispatch(setStompClient(stompClient));
   }
 
   // messages handeling
@@ -129,6 +137,7 @@ const ChatPage = () => {
         }
         sendNoticeMessage();
         //TODO: Zmien status goscia
+        changeUserStatusInStore(payloadData.senderName, "online")
         break;
 
       case MessageStatus.MESSAGE:
@@ -141,7 +150,7 @@ const ChatPage = () => {
         break;
 
       case MessageStatus.LEAVE:
-        //TODO: Zmien status goscia
+          UserRequests.RequestAllUsersData(requestUserDataSettled, requestUserDataRejected)
         break; 
     }
   }
@@ -153,7 +162,7 @@ const ChatPage = () => {
       senderName: login.userName,
       status: MessageStatus.JOIN
     };
-    stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+    chat.stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
   }
 
   const sendNoticeMessage = () => {
@@ -161,11 +170,20 @@ const ChatPage = () => {
         senderName: login.userName,
         status: MessageStatus.NOTICE
       };
-    stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+    chat.stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+  }
+
+  const sendLeaveMessage = () => {
+    var chatMessage = {
+      senderName: login.userName,
+      status: MessageStatus.LEAVE
+    };
+    if( chat.stompClient )
+      chat.stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
   }
 
   const sendMessage = () => {
-    if (stompClient) {
+    if (chat.stompClient) {
       if( chat.selectedUserName === "CHATROOM" ){
         const chatMessage = {
           senderName: login.userName,
@@ -174,7 +192,7 @@ const ChatPage = () => {
         };
         console.log(chatMessage);
 
-        stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+        chat.stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
         setInputMessage("");
       }
     }
@@ -218,6 +236,19 @@ const ChatPage = () => {
     }
   }, [login])
 
+  // request status change
+
+  const requestUserStatusChangeSettled = (response) => {
+  }
+
+  const requestUserStatusChangeRejected = (response) => {
+    setAlertInfo({
+      title: "Users data status change failed",
+      content: "Error code: "+response.status
+    })
+    handleClickOpen();
+  }
+
   const intialList = [
     {
       messageId: 1,
@@ -238,6 +269,8 @@ const ChatPage = () => {
   ]
 
   const StartChat = () => {
+    changeUserStatusInStore(login.userName, "online")
+    UserRequests.RequestUserStatusChange(login.userName, "online")
     Connect();
     // getAllPreviousPriavteMessages();
     getAllPreviousPublicMessages();

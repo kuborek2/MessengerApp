@@ -77,9 +77,9 @@ public class ChatController {
 
     @CrossOrigin
     @PutMapping("/users")
-    public ResponseEntity<Void> updateUserStatus(@RequestBody NewUserDto newUserDto){
-        Boolean result = chatService.saveUser(newUserDto);
-        LOGGER.info("Did user got upadted: "+result);
+    public ResponseEntity<Void> updateUserStatus(@RequestParam("userName") String userName, @RequestParam("status") String status){
+        Boolean result = chatService.changeUserStatus(userName, status);
+        LOGGER.info("Did user status got upadted: "+result);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -44,6 +44,7 @@ const MessegesListElement = ({imageSrc, message, senderName, showIcon}) => {
           <img src={imageSrc} alt={senderName}/>
         </div>
         <div className='message-container'>
+          <h5 style={assessIconVisability()}>{senderName}</h5>
           <h4>{message}</h4>
         </div>
       </div>

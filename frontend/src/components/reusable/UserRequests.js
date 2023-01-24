@@ -26,4 +26,14 @@ const RequestAllUsersData = (funcSettled, funcRejected) => {
     .catch((err) => {console.log(err)})
 }
 
-export default { RequestUserCredintionals, RequestUserRegistration, RequestAllUsersData };
+const RequestUserStatusChange = (userName, newStatus, funcSettled, funcRejected) => {
+  return axios({
+    method: 'put',
+    url: 'http://localhost:8080/users?userName='+userName+'&status='+newStatus,
+  }).then(funcSettled, funcRejected)
+    .catch((err) => {console.log(err)})
+}
+
+
+
+export default { RequestUserCredintionals, RequestUserRegistration, RequestAllUsersData, RequestUserStatusChange };

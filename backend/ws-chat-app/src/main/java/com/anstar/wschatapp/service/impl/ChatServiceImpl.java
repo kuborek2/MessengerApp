@@ -63,6 +63,22 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    public Boolean changeUserStatus(String userName, String status) {
+        Optional<UserEti> userEtiOptional = Optional.ofNullable(userRepository.findByUserName(userName));
+        if( userEtiOptional.isPresent() ) {
+            UserEti userEti = UserEti.builder()
+                    .userName(userName)
+                    .password(userEtiOptional.get().getPassword())
+                    .imageSrc(userEtiOptional.get().getImageSrc())
+                    .status(mapUserStatus(status))
+                    .build();
+            userRepository.save(userEti);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public Boolean saveMessage(NewMessageDto newMessageDto) {
         MessageEti newMessage = messageDtoToMessageEtiMapper.convert(newMessageDto);
         MessageEti savedMessage = messageRepository.save(newMessage);
@@ -89,6 +105,28 @@ public class ChatServiceImpl implements ChatService {
         LOGGER.info(newUser.getStatus().getClass().toString());
         UserEti savedUser = userRepository.save(newUser);
         return savedUser.getUserName() == newUserDto.getUserName();
+    }
+
+    private UserEti.UserStatus mapUserStatus(String userStatus){
+        UserEti.UserStatus result;
+        switch(userStatus){
+            case "online":
+                result = UserEti.UserStatus.online;
+                break;
+
+            case "offline":
+                result = UserEti.UserStatus.offline;
+                break;
+
+            case "away":
+                result = UserEti.UserStatus.away;
+                break;
+
+            default:
+                result = UserEti.UserStatus.offline;
+                break;
+        }
+        return result;
     }
 
 }

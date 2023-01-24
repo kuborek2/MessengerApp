@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import MessageStatus from "../../enum/MessageStatus";
 import { toggleLogin } from "../../store/loginSlice";
+import UserRequests from "../reusable/UserRequests";
 import './TopNavigation.css'
 
 const TopNavigation = () => {
@@ -8,13 +10,31 @@ const TopNavigation = () => {
     const navigate = useNavigate();
 
     const login = useSelector(state => state.login)
+    const chat = useSelector(state => state.chat)
 
     const dispatch = useDispatch()
 
     const LogOut = () => {
+        UserRequests.RequestUserStatusChange(login.userName, "offline")
+        var chatMessage = {
+            senderName: login.userName,
+            status: MessageStatus.LEAVE
+          };
+        if( chat.stompClient )
+            chat.stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
         dispatch(toggleLogin(""))
         navigate("/");
     }
+
+    //Handle status change
+    const requestUserStatusChangeSettled = (response) => {
+    }
+  
+    const requestUserStatusChangeRejected = (response) => {
+        console.log("use status change failed: "+response.status)
+    }
+
+
 
     const UserControlButtons = (...props) => {
         return (
