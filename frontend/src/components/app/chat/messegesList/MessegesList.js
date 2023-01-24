@@ -1,5 +1,4 @@
 
-import { flexbox } from '@mui/system';
 import { useSelector } from 'react-redux';
 import MessegesListElement from '../messegesListElement/MessegesListElement';
 import './MessegesList.css'
@@ -8,10 +7,6 @@ const MessegesList = ({list}) => {
 
   const chat = useSelector(state => state.chat)
   let filteredList;
-  if( list.has(chat.selectedUserName) )
-    filteredList = list.get(chat.selectedUserName)
-  else
-    return (<></>)
 
   const findProfilePicture = (userName) => {
     let userIndex = chat.usersList.findIndex((elem) => elem.userName === userName)
@@ -25,30 +20,35 @@ const MessegesList = ({list}) => {
       return true
   }
 
-  if( filteredList && filteredList.length <= 0 || chat.usersList && chat.usersList <= 0 ){
-    return (<></>);
+  if( list.findIndex((elem) => elem.name === chat.selectedUserName) === -1 ){
+    return (<></>)
   } else {
-      let result = filteredList.map((elem, index) => {
-          if ( typeof elem === 'object' ){
-              let keys = Object.keys(elem);
-              if( keys.includes("senderName") && keys.includes("message") ){
-                  return (
-                    <MessegesListElement 
-                      key={elem.messageId+elem.senderName+String(Math.floor(Math.random()))}
-                      imageSrc={findProfilePicture(elem.senderName)} 
-                      message={elem.message}
-                      senderName={elem.senderName}
-                      showIcon={shouldShowIcon(index, elem.senderName)}/>
-                  );
-              }
-          }
-          return '';
-      })
-      return (
-        <div style={{ display: "flex", flexDirection: "column" }}> 
-          {result} 
-        </div>
-      );
+    filteredList = (list.filter((elem) => elem.name === chat.selectedUserName))[0].list
+    if( filteredList && filteredList.length <= 0 ){
+      return (<></>);
+    } else {
+        let result = filteredList.map((elem, index) => {
+            if ( typeof elem === 'object' ){
+                let keys = Object.keys(elem);
+                if( keys.includes("senderName") && keys.includes("message") ){
+                    return (
+                      <MessegesListElement 
+                        key={elem.messageId+elem.senderName+String(Math.floor(Math.random()))}
+                        imageSrc={findProfilePicture(elem.senderName)} 
+                        message={elem.message}
+                        senderName={elem.senderName}
+                        showIcon={shouldShowIcon(index, elem.senderName)}/>
+                    );
+                }
+            }
+            return '';
+        })
+        return (
+          <div style={{ display: "flex", flexDirection: "column" }}> 
+            {result} 
+          </div>
+        );
+    }
   }
 }
 

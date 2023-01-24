@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     selectedUserName: "",
     usersList: [],
-    chatRooms: new Map([['CHATROOM',[]]]),
+    chatRooms: [{name: "CHATROOM", list: []}],
     stompClient: null
 }
 
@@ -21,10 +21,12 @@ const chatSlice = createSlice({
           state.chatRooms = action.payload
         },
         addChatRoom: (state, action) => {
-          state.chatRooms.set(action.payload.name, action.payload.list)
+          if( state.chatRooms.findIndex((x) => x.name === action.payload.name) === -1 )
+            state.chatRooms.push(action.payload)
         },
         pushToChatRoom: (state, action) => {
-          state.chatRooms.get(action.payload.chatName).push(action.payload.chatMessage)
+          let foundIndex = state.chatRooms.findIndex((elem) => elem.name === action.payload.chatName);
+          state.chatRooms[foundIndex].list.push(action.payload.chatMessage)
         },
         changeUserStatus: (state, action) => {
           state.usersList[action.payload.index].status = action.payload.newStatus;

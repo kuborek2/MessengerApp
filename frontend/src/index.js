@@ -17,7 +17,7 @@ import AppPage from './components/app/AppPage';
 import ChatPage from './components/app/chat/ChatPage';
 import { enableMapSet } from 'immer';
 
-enableMapSet();
+// enableMapSet();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

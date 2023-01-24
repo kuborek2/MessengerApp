@@ -132,7 +132,7 @@ const ChatPage = () => {
     const payloadData = JSON.parse(payload.body);
     switch( payloadData.status ){
       case MessageStatus.JOIN:
-        if(!chat.chatRooms.get(payloadData.senderName)){
+        if(chat.chatRooms.findIndex((x) => x.name === payloadData.senderName) === -1){
             dispatch(addChatRoom({name: payloadData.senderName, list: []}));
         }
         sendNoticeMessage();
@@ -145,8 +145,7 @@ const ChatPage = () => {
         break;
 
       case MessageStatus.NOTICE:
-        if(!chat.chatRooms.get(payloadData.senderName))
-          UserRequests.RequestAllUsersData(requestUserDataSettled, requestUserDataRejected)
+        UserRequests.RequestAllUsersData(requestUserDataSettled, requestUserDataRejected)
         break;
 
       case MessageStatus.LEAVE:
@@ -158,7 +157,7 @@ const ChatPage = () => {
   const onPrivateMessage = (payload)=>{
     var payloadData = JSON.parse(payload.body);
     console.log(payload)
-    if(chat.chatRooms.get(payloadData.senderName)){
+    if(chat.chatRooms.findIndex((x) => x.name === payloadData.senderName) !== -1){
       dispatch(pushToChatRoom({chatName: payloadData.senderName,chatMessage: payloadData}));
     } else {
       dispatch(addChatRoom({name: payloadData.senderName, list: []}));
@@ -237,7 +236,9 @@ const ChatPage = () => {
     if( response.status === 200 ){
       dispatch(setUsersList(response.data))
       response.data.map((elem) => {
-        dispatch(addChatRoom({name: elem.userName, list: []}));
+        if( chat.chatRooms.findIndex((x) => x.name === elem.userName) === -1)
+          dispatch(addChatRoom({name: elem.userName, list: []}));
+        console.log(chat.chatRooms)
       })
     }
   }
