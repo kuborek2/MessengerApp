@@ -110,8 +110,8 @@ const ChatPage = () => {
   }
 
   const OnConnected = () => {
-    chat.stompClient.subscribe('/chatroom/public', OnPublicMessageReceived);
-    // stompClient.subscribe('/user/'+userData.username+'/private', onPrivateMessage);
+    stompClient.subscribe('/chatroom/public', OnPublicMessageReceived);
+    stompClient.subscribe('/user/'+login.userName+'/private', onPrivateMessage);
     userJoin();
   }
 
@@ -155,6 +155,17 @@ const ChatPage = () => {
     }
   }
 
+  const onPrivateMessage = (payload)=>{
+    var payloadData = JSON.parse(payload.body);
+    console.log(payload)
+    if(chat.chatRooms.get(payloadData.senderName)){
+      dispatch(pushToChatRoom({chatName: payloadData.senderName,chatMessage: payloadData}));
+    } else {
+      dispatch(addChatRoom({name: payloadData.senderName, list: []}));
+      dispatch(pushToChatRoom({chatName: payloadData.senderName,chatMessage: payloadData}));
+    }
+}
+
   // sending message
 
   const userJoin = () => {
@@ -162,7 +173,7 @@ const ChatPage = () => {
       senderName: login.userName,
       status: MessageStatus.JOIN
     };
-    chat.stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+    stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
   }
 
   const sendNoticeMessage = () => {
@@ -170,7 +181,7 @@ const ChatPage = () => {
         senderName: login.userName,
         status: MessageStatus.NOTICE
       };
-    chat.stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+    stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
   }
 
   const sendLeaveMessage = () => {
@@ -178,12 +189,12 @@ const ChatPage = () => {
       senderName: login.userName,
       status: MessageStatus.LEAVE
     };
-    if( chat.stompClient )
-      chat.stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+    if( stompClient )
+      stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
   }
 
   const sendMessage = () => {
-    if (chat.stompClient) {
+    if (stompClient) {
       if( chat.selectedUserName === "CHATROOM" ){
         const chatMessage = {
           senderName: login.userName,
@@ -192,7 +203,18 @@ const ChatPage = () => {
         };
         console.log(chatMessage);
 
-        chat.stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+        stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+        setInputMessage("");
+      } else {
+        var chatMessage = {
+          senderName: login.userName,
+          receiverName: chat.selectedUserName,
+          message: inputMessage,
+          status: MessageStatus.MESSAGE
+        };
+        console.log(chatMessage);
+        stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
+        dispatch(pushToChatRoom({chatName: chat.selectedUserName,chatMessage: chatMessage}));
         setInputMessage("");
       }
     }
