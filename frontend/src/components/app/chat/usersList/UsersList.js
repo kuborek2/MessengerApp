@@ -38,7 +38,6 @@ const UsersList = ({ list }) => {
   if( list && list.length <= 0 ){
       return (<></>);
   } else {
-    console.log(list)
     let actuallList = [chatRoom,...list]
     let result = actuallList.map((elem) => {
       if ( typeof elem === 'object' ){

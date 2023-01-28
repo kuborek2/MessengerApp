@@ -178,7 +178,7 @@ const ChatPage = () => {
   const onPrivateMessage = (payload)=>{
     var payloadData = JSON.parse(payload.body);
     const test = chat.chatRooms.findIndex((x) => x.name === payloadData.senderName) !== -1;
-    if( payloadData.senderName === login.senderName ){
+    if( payloadData.senderName === login.userName ){
 
     } else if(test){
       dispatch(pushToChatRoom({chatName: payloadData.senderName,chatMessage: payloadData}));
@@ -223,7 +223,6 @@ const ChatPage = () => {
           message: inputMessage,
           status: MessageStatus.MESSAGE
         };
-        console.log(chatMessage);
 
         stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
         setInputMessage("");
@@ -234,7 +233,6 @@ const ChatPage = () => {
           message: inputMessage,
           status: MessageStatus.MESSAGE
         };
-        console.log(chatMessage);
         stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
         dispatch(pushToChatRoom({chatName: chat.selectedUserName,chatMessage: chatMessage}));
         setInputMessage("");
@@ -248,7 +246,6 @@ const ChatPage = () => {
     axios.get(`http://localhost:8080/messages?userName=null`)
         .then(res => {
             const messages = res.data;
-            console.log(messages)
             messages.map((message) => handlePreviousPublicMessage(message))
         })
   }
@@ -257,7 +254,6 @@ const ChatPage = () => {
     axios.get(`http://localhost:8080/messages?userName=`+login.userName)
         .then(res => {
             const messages = res.data;
-            console.log(messages)
             messages.map((message) => handlePreviousMessage(message))
         })
   }
@@ -270,7 +266,6 @@ const ChatPage = () => {
       response.data.map((elem) => {
         if( chat.chatRooms.findIndex((x) => x.name === elem.userName) === -1)
           dispatch(addChatRoom({name: elem.userName, list: []}));
-        console.log(chat.chatRooms)
       })
     }
   }

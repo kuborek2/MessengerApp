@@ -14,9 +14,6 @@ const ChatRoom = () => {
         connected: false,
         message: ''
       });
-    useEffect(() => {
-      console.log(userData);
-    }, [userData]);
 
     const connect =()=>{
         let Sock = new SockJS('http://localhost:8080/ws');
@@ -102,7 +99,6 @@ const ChatRoom = () => {
         axios.get(`http://localhost:8080/messages?userName=`+userData.username)
             .then(res => {
                 const messages = res.data;
-                console.log(messages)
                 messages.map((message) => handlePreviousMessage(message))
             })
     }
@@ -111,13 +107,11 @@ const ChatRoom = () => {
         axios.get(`http://localhost:8080/messages?userName=null`)
             .then(res => {
                 const messages = res.data;
-                console.log(messages)
                 messages.map((message) => handlePreviousPublicMessage(message))
             })
     }
     
     const onPrivateMessage = (payload)=>{
-        console.log(payload);
         var payloadData = JSON.parse(payload.body);
         if(privateChats.get(payloadData.senderName)){
             privateChats.get(payloadData.senderName).push(payloadData);
@@ -146,7 +140,6 @@ const ChatRoom = () => {
             message: userData.message,
             status:"MESSAGE"
             };
-            console.log(chatMessage);
             stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
             setUserData({...userData,"message": ""});
         }

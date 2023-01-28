@@ -23,10 +23,6 @@ const MessegesList = ({list}) => {
   if( list.findIndex((elem) => elem.name === chat.selectedUserName) !== -1 ){
     let filteredObjectsList = list.filter((elem) => elem.name === chat.selectedUserName)
     filteredList = filteredObjectsList[0].list
-    console.log("this is filetered objects list")
-    console.log(filteredObjectsList)
-    console.log("this is filteredlist: ")
-    console.log(filteredList)
   } else {
     return (<></>)
   }
