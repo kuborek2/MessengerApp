@@ -7,8 +7,13 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     background-color: #595858;
     height: 75px;
+}
+
+.top-navigation-layout > h3 {
+    color:white;
 }
 
 .top-navigation-layout > a {

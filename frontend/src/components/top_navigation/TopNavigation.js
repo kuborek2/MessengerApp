@@ -56,6 +56,7 @@ const TopNavigation = () => {
                     MessengerApp
                 </h2>
             </Link>
+            { login.isUserLoggedIn ? <h3>Hello { login.userName }</h3> : "" }
             { login.isUserLoggedIn ? <UserControlButtons/> : "" }
         </div>
     );
