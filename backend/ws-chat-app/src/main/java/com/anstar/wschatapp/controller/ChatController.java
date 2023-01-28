@@ -93,10 +93,10 @@ public class ChatController {
     }
 
     @MessageMapping("/private-message")
-    public NewMessageDto recMessage(@Payload NewMessageDto newMessageDto){
-        simpMessagingTemplate.convertAndSendToUser(newMessageDto.getReceiverName(),"/private", newMessageDto);
-        LOGGER.info("Did message got saved " + chatService.saveMessage(newMessageDto));
-        System.out.println(newMessageDto.toString());
-        return newMessageDto;
+    public void recMessage(@Payload NewMessageDto newMessageDto){
+        LOGGER.info("saveing message: "+newMessageDto);
+        MessageDto savedMessage = chatService.saveMessage(newMessageDto);
+        LOGGER.info("saved message: "+savedMessage);
+        simpMessagingTemplate.convertAndSendToUser(savedMessage.getReceiverName(),"/private", savedMessage);
     }
 }

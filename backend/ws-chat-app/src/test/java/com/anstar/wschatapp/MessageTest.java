@@ -1,6 +1,7 @@
 package com.anstar.wschatapp;
 
 
+import com.anstar.wschatapp.model.dto.MessageDto;
 import com.anstar.wschatapp.model.dto.NewMessageDto;
 import com.anstar.wschatapp.model.dto.NewUserDto;
 import com.anstar.wschatapp.model.enums.Status;
@@ -33,10 +34,10 @@ public class MessageTest {
             );
 
         //when
-        Boolean result = chatService.saveMessage(newMessageDto);
+        MessageDto result = chatService.saveMessage(newMessageDto);
 
         //then
-        assertTrue(result);
+        assertTrue(result.getMessage() == newMessageDto.getMessage());
 
     }
 

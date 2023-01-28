@@ -16,7 +16,7 @@ public interface ChatService {
 
     public Boolean changeUserStatus(String userName, String status);
 
-    public Boolean saveMessage(NewMessageDto newMessageDto);
+    public MessageDto saveMessage(NewMessageDto newMessageDto);
 
     public List<MessageDto> findAllMessagesByUserName(String userName);
 

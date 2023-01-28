@@ -29,6 +29,7 @@ public class ChatServiceImpl implements ChatService {
     private final UserListMapper userListMapper;
     private final MessageDtoToMessageEtiMapper messageDtoToMessageEtiMapper;
     private final MessageEtiListMapper messageEtiListMapper;
+    private final MessageEtiToMessageDtoMapper messageEtiToMessageDtoMapper;
 
     public ChatServiceImpl( UserRepository userRepository,
                             UserListMapper userListMapper,
@@ -36,7 +37,8 @@ public class ChatServiceImpl implements ChatService {
                             MessageDtoToMessageEtiMapper messageDtoToMessageEtiMapper,
                             MessageEtiListMapper messageEtiListMapper,
                             UserMapper userMapper,
-                            NewUserMapper newUserMapper){
+                            NewUserMapper newUserMapper,
+                            MessageEtiToMessageDtoMapper messageEtiToMessageDtoMapper){
         this.userRepository = userRepository;
         this.userListMapper = userListMapper;
         this.messageRepository = messageRepository;
@@ -44,6 +46,7 @@ public class ChatServiceImpl implements ChatService {
         this.messageEtiListMapper = messageEtiListMapper;
         this.userMapper = userMapper;
         this.newUserMapper = newUserMapper;
+        this.messageEtiToMessageDtoMapper = messageEtiToMessageDtoMapper;
     }
 
     @Override
@@ -79,10 +82,10 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public Boolean saveMessage(NewMessageDto newMessageDto) {
+    public MessageDto saveMessage(NewMessageDto newMessageDto) {
         MessageEti newMessage = messageDtoToMessageEtiMapper.convert(newMessageDto);
         MessageEti savedMessage = messageRepository.save(newMessage);
-        return savedMessage.equals(newMessage);
+        return messageEtiToMessageDtoMapper.convert(savedMessage);
     }
 
     @Override
