@@ -1,0 +1,87 @@
+body {
+    overflow-y: scroll;
+    margin: 0;
+}
+
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+.pageLayout {
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+.topElement {
+    color: #00C9C7;
+    width: 100vw;
+    height: 100vh;
+    background-color: #595858;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.topElement > div {
+    position: absolute;
+    top: 50%; right: 50%;
+    transform: translate(50%,-50%);
+    width: fit-content;
+    height: fit-content;
+}
+
+.topElement > div > img {
+    /* background-image: url(../../../resources/chat-image.png); */
+    background-repeat: no-repeat;
+    filter: invert(70%);
+}
+
+.topElement > article {
+    position: absolute;
+    top: 50%; right: 50%;
+    transform: translate(50%,-65%);
+    width: 50%;
+}
+
+.topElement > article > h1 {
+    font-size: 5em;
+    text-align: center;
+    margin-bottom: 15px;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black, 0 0 5px #334B48;
+}
+
+.topElement > article > p {
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black, 0 0 5px #334B48;
+    -webkit-text-stroke: 0.01em black;
+    display: block;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: justify;
+}
+
+.topElement > article > .buttonSpace {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.topElement > article > .buttonSpace > a {
+    width: fit-content;
+    height: fit-content;
+}
+
+.navButton {
+    width: 10vw;
+    height: 6vh;
+    background-color: #00C9C7;
+    color: white;
+    border: none;
+    border-radius: 10vw;
+}
+
+.navButton:hover {
+    background-color: #FFE4E5;
+    color: #8B8A8A;
+}
+

@@ -6,12 +6,17 @@ import com.anstar.wschatapp.model.dto.NewUserDto;
 import com.anstar.wschatapp.model.dto.UserDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ChatService {
 
     public List<UserDto> findAllUsers();
 
-    public Boolean saveMessage(NewMessageDto newMessageDto);
+    public Optional<UserDto> findOneUserByUserName(String userName);
+
+    public Boolean changeUserStatus(String userName, String status);
+
+    public MessageDto saveMessage(NewMessageDto newMessageDto);
 
     public List<MessageDto> findAllMessagesByUserName(String userName);
 

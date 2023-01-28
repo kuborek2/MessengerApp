@@ -1,0 +1,57 @@
+
+.top-navigation-layout {
+    margin: 0px;
+    overflow: hidden;
+    padding: 0px 30px 0px 30px;
+    width: calc(100%-60px);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #595858;
+    height: 75px;
+}
+
+.top-navigation-layout > h3 {
+    color:white;
+}
+
+.top-navigation-layout > a {
+    text-decoration: none;
+    width: fit-content;
+}
+
+.top-navigation-layout > .userControlButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.top-navigation-layout > .userControlButtons > button {
+    margin-right: 1vw;
+}
+@keyframes header_anim {
+    from {color: #00C9C7}
+    to {color: white;}
+  }
+
+@keyframes header_anim_reverse {
+    from {color: white}
+    to {color: #00C9C7}
+  }
+
+.header {
+    color: #00C9C7;
+    animation-name: header_anim_reverse;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.header:hover {
+    animation-name: header_anim;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+

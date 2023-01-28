@@ -1,0 +1,52 @@
+.footerLayout {
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+    padding: 15px 30px 15px 30px;
+    width: calc(100%-60px);
+    display: grid;
+    grid-template-columns: 45% 45%;
+    margin: auto;
+    background-color: #00C9C7;
+}
+
+.socialMedia {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+
+}
+
+.socialMedia > button, .socialMedia > a {
+    margin-left: 10px;
+    width: 45px;
+    height: 45px;
+    border: none;
+    background-color: #00C9C7;
+    background-size: 45px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 45px;
+}
+
+.socialMedia > button:nth-child(1) {
+    background-image: url(../../resources/instagram.png);
+}
+
+.socialMedia > button:nth-child(2) {
+    background-image: url(../../resources/facebook.png);
+}
+
+.socialMedia > button:nth-child(3) {
+    background-image: url(../../resources/twitter.png);
+}
+
+.socialMedia > a:nth-child(4) {
+    background-image: url(../../resources/github.png);
+}
+
+.socialMedia > button:hover, .socialMedia > a:hover {
+    filter: invert(100%);
+    -webkit-filter: invert(100%);
+}

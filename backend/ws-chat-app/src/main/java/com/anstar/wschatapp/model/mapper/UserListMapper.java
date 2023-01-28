@@ -17,9 +17,10 @@ public List<UserDto> convert(List<UserEti> users) {
         List<UserDto> userDto = users
             .stream()
             .map((source -> {
-                return new UserDto.Builder()
+                return UserDto.builder()
                     .userName(source.getUserName())
                     .status(source.getStatus())
+                    .imageSrc(source.getImageSrc())
                     .build();
             }))
             .collect(Collectors.toList());

@@ -1,0 +1,55 @@
+
+.user-list-element-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 14vw;
+  height: 8vh;
+  background-color: #00C9C7;
+  border-radius: 3vw;
+  margin-bottom: 2vh;
+}
+
+/* .user-list-element-container:hover {
+  background-color: rgb(0, 201, 199, 0.5);
+} */
+
+.user-list-element-container > div {
+  position: absolute;
+  left: 1vw;
+  transform: translate(-1vw);
+  height: fit-content;
+  width: fit-content;
+  margin: 0.1vw;
+  margin-right: 1vw;
+  margin-left: 1vw;
+}
+
+.user-list-element-container > div > img {
+  height: 2.25vw;
+  width: 2.25vw;
+  border-radius: 2vw;
+  border: 2px solid #8B8A8A;
+}
+
+.user-list-element-container > div .user-status {
+  position: absolute;
+  left: 1.5vw;
+  top: 1.5vw;
+  height: 1vw;
+  width: 1vw;
+  border-radius: 1vw;
+}
+
+.user-list-element-container > h1 {
+  position: absolute;
+  left: 5vw;
+  align-self: center;
+  font-size: 1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 8vw;
+  white-space: nowrap;
+}
