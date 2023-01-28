@@ -98,7 +98,7 @@ const SignInPage = () => {
     const SignInRejected = () => {
         setAlertInfo({
             title: "Logowanie nie powiodło się",
-            content: ""
+            content: "Proszę spróbować póżniej"
         })
         handleClickOpen();
     }

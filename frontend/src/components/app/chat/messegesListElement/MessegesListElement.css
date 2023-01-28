@@ -95,7 +95,8 @@
 .right > .messeges-list-element-container > div.message-container {
   transform: translate(-4vw);
   background-color: rgb(89, 88, 88, 0.5);
-  color: white
+  color: white;
+  border: 1px solid white;
 }
 
 .right > .messeges-list-element-container > div.img-container {

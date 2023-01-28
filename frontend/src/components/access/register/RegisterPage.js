@@ -120,16 +120,16 @@ const RegisterPage = () => {
         if(response.response.status === 500)
             setAlertInfo({
                 title: "Rejestracja nie powidła się",
-                content: "Kod błędu 500: Problem z serwerem"
+                content: "Problem z serwerem, prosze spróbować póżniej"
             })
         else if(response.response.status === 409)
             setAlertInfo({
                 title: "Rejestracja nie powidła się",
-                content: "Kod błędu 409: Login już zajęty"
+                content: "Login jest już zajęty"
             })
         else setAlertInfo({
                 title: "Rejestracja nie powidła się",
-                content: "Kod błędu "+response.code+" : Nieznany błąd"
+                content: "Nieznany błąd"
             })
 
         handleClickOpen();
