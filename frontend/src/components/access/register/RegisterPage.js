@@ -157,7 +157,8 @@ const RegisterPage = () => {
         setFormValues({
             login: "",
             password: "",
-            confirmPassword: ""
+            confirmPassword: "",
+            imageSrc: ""
         });
     }
 

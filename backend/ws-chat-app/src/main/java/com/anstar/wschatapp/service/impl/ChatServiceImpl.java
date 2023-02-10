@@ -105,9 +105,11 @@ public class ChatServiceImpl implements ChatService {
             return false;
 
         UserEti newUser = newUserMapper.convert(newUserDto);
-        LOGGER.info(newUser.getStatus().getClass().toString());
-        UserEti savedUser = userRepository.save(newUser);
-        return savedUser.getUserName() == newUserDto.getUserName();
+        userRepository.save(newUser);
+        Optional<UserEti> savedUserOptional = Optional.ofNullable(userRepository.findByUserName(newUserDto.getUserName()));
+        if( savedUserOptional.isEmpty() )
+            return false;
+        return true;
     }
 
     private UserEti.UserStatus mapUserStatus(String userStatus){
